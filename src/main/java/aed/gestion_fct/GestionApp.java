@@ -18,11 +18,12 @@ public class GestionApp {
                 System.out.println("Elije qué tabla quieres modificar:");
                 System.out.println("1. Alumno");
                 System.out.println("2. Empresa");
-                System.out.println("3. Tutor Docente"); // Nueva opción para Tutor Docente
-                System.out.println("4. Salir");
+                System.out.println("3. Tutor Docente");
+                System.out.println("4. Tutor Empresa");
+                System.out.println("5. Salir");
                 System.out.print("Seleccione una opción: ");
 
-                opcion = leerOpcion(1, 4); // Ajustar el rango de opciones
+                opcion = leerOpcion(1, 5); // Ajustar el rango de opciones
 
                 switch (opcion) {
                     case 1:
@@ -35,10 +36,13 @@ public class GestionApp {
                         menuTutorDocente(); // Llama al nuevo método
                         break;
                     case 4:
+                        menuTutorEmpresa(); // Llama al nuevo método
+                        break;
+                    case 5:
                         System.out.println("Cerrando la aplicación...");
                         break;
                 }
-            } while (opcion != 4);
+            } while (opcion != 5);
         } finally {
             ConnectionPool.close();
         }
@@ -144,6 +148,39 @@ public class GestionApp {
         } while (opcion != 5);
     }
 
+    public void menuTutorEmpresa() {
+        int opcion;
+        do {
+            System.out.println("Gestión de Tutor Empresa:");
+            System.out.println("1. Crear Tutor Empresa");
+            System.out.println("2. Leer Tutor Empresa");
+            System.out.println("3. Modificar Tutor Empresa");
+            System.out.println("4. Borrar Tutor Empresa");
+            System.out.println("5. Volver al menú principal");
+            System.out.print("Seleccione una opción: ");
+
+            opcion = leerOpcion(1, 5);
+
+            switch (opcion) {
+                case 1:
+                    crearTutorEmpresa();
+                    break;
+                case 2:
+                    leerTutorEmpresa();
+                    break;
+                case 3:
+                    modificarTutorEmpresa();
+                    break;
+                case 4:
+                    borrarTutorEmpresa();
+                    break;
+                case 5:
+                    System.out.println("Volviendo al menú principal...");
+                    break;
+            }
+        } while (opcion != 5);
+    }
+
     //Crear
     private void crearAlumno() {
         System.out.print("Nombre: ");
@@ -225,6 +262,30 @@ public class GestionApp {
         }
     }
 
+    private void crearTutorEmpresa() {
+        System.out.print("Nombre: ");
+        String nombre = sc.nextLine();
+
+        String telefono = leerEntrada("Teléfono (Solo números): ", "^[0-9 ]+$",
+                "El teléfono solo puede contener números y espacios.");
+        String correo = leerEntrada("Correo (Debe contener @): ", ".*@.*",
+                "El correo debe contener un '@'.");
+
+        String insertQuery = "INSERT INTO tutorempresa (nombre, telefono, correo) VALUES (?, ?, ?)";
+        try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+
+            preparedStatement.setString(1, nombre);
+            preparedStatement.setString(2, telefono);
+            preparedStatement.setString(3, correo);
+
+            int filasAfectadas = preparedStatement.executeUpdate();
+            System.out.println("Tutor de empresa creado. Filas afectadas: " + filasAfectadas);
+
+        } catch (SQLException e) {
+            System.err.println("Error al crear tutor de empresa: " + e.getMessage());
+        }
+    }
+
     //Leer
     private void leerAlumno() {
         String query = "SELECT * FROM alumno";
@@ -279,6 +340,24 @@ public class GestionApp {
 
         } catch (SQLException e) {
             System.err.println("Error al leer los Tutores Docentes: " + e.getMessage());
+        }
+    }
+
+    private void leerTutorEmpresa() {
+        String query = "SELECT * FROM tutorempresa";
+
+        try (Connection connection = ConnectionPool.getConnection(); Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(query)) {
+
+            while (resultSet.next()) {
+                System.out.println("ID: " + resultSet.getInt("id_tutor_empresa"));
+                System.out.println("Nombre: " + resultSet.getString("nombre"));
+                System.out.println("Teléfono: " + resultSet.getString("telefono"));
+                System.out.println("Correo: " + resultSet.getString("correo"));
+                System.out.println("-----------------------------------");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error al leer los tutores de empresa: " + e.getMessage());
         }
     }
 
@@ -372,6 +451,33 @@ public class GestionApp {
         }
     }
 
+    private void modificarTutorEmpresa() {
+        int id_tutor_empresa = leerIdTutorEmpresa("ID del tutor de empresa a modificar: ");
+
+        System.out.print("Nombre: ");
+        String nombre = sc.nextLine();
+
+        String telefono = leerEntrada("Teléfono (Solo números): ", "^[0-9 ]+$",
+                "El teléfono solo puede contener números y espacios.");
+        String correo = leerEntrada("Correo (Debe contener @): ", ".*@.*",
+                "El correo debe contener un '@'.");
+
+        String updateQuery = "UPDATE tutorempresa SET nombre = ?, telefono = ?, correo = ? WHERE id_tutor_empresa = ?";
+        try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+
+            preparedStatement.setString(1, nombre);
+            preparedStatement.setString(2, telefono);
+            preparedStatement.setString(3, correo);
+            preparedStatement.setInt(4, id_tutor_empresa);
+
+            int filasAfectadas = preparedStatement.executeUpdate();
+            System.out.println("Tutor de empresa actualizado. Filas afectadas: " + filasAfectadas);
+
+        } catch (SQLException e) {
+            System.err.println("Error al actualizar el tutor de empresa: " + e.getMessage());
+        }
+    }
+
     //Borrar
     private void borrarAlumno() {
         int id_alumno = leerIdAlumno("ID del alumno a borrar: ");
@@ -412,6 +518,20 @@ public class GestionApp {
 
         } catch (SQLException e) {
             System.err.println("Error al eliminar el Tutor Docente: " + e.getMessage());
+        }
+    }
+
+    private void borrarTutorEmpresa() {
+        int id_tutor_empresa = leerIdTutorEmpresa("ID del tutor de empresa a borrar: ");
+        String deleteQuery = "DELETE FROM tutorempresa WHERE id_tutor_empresa = ?";
+        try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
+
+            preparedStatement.setInt(1, id_tutor_empresa);
+            int filasAfectadas = preparedStatement.executeUpdate();
+            System.out.println("Tutor de empresa eliminado. Filas afectadas: " + filasAfectadas);
+
+        } catch (SQLException e) {
+            System.err.println("Error al eliminar el tutor de empresa: " + e.getMessage());
         }
     }
 
@@ -484,7 +604,24 @@ public class GestionApp {
         }
     }
 
+    private int leerIdTutorEmpresa(String mensaje) {
+        while (true) {
+            System.out.print(mensaje);
+            String entrada = sc.nextLine();  // Leer como String para validar
+            if (entrada.matches("^[0-9]+$")) {  // Verificar que solo contenga números
+                int id = Integer.parseInt(entrada);  // Convertir a entero
+                if (existeTutorEmpresa(id)) {
+                    return id;  // Si el ID es válido, retornamos
+                } else {
+                    System.out.println("El ID ingresado no corresponde a ningún tutor de empresa. Intenta nuevamente.");
+                }
+            } else {
+                System.out.println("Por favor, ingresa un ID válido (solo números).");
+            }
+        }
+    }
     //Leer datos
+
     private String leerEntrada(String mensaje, String regex, String errorMensaje) {
         while (true) {
             System.out.print(mensaje);
@@ -538,6 +675,21 @@ public class GestionApp {
 
         } catch (SQLException e) {
             System.err.println("Error al verificar el ID del Tutor Docente: " + e.getMessage());
+            return false;
+        }
+    }
+
+    private boolean existeTutorEmpresa(int id_tutor_empresa) {
+        String query = "SELECT COUNT(*) FROM tutorempresa WHERE id_tutor_empresa = ?";
+        try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, id_tutor_empresa);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getInt(1) > 0;
+
+        } catch (SQLException e) {
+            System.err.println("Error al verificar el ID del tutor de empresa: " + e.getMessage());
             return false;
         }
     }
