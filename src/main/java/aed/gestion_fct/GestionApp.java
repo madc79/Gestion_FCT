@@ -1,6 +1,5 @@
 package aed.gestion_fct;
 
-import com.google.protobuf.TextFormat.ParseException;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
@@ -23,11 +22,12 @@ public class GestionApp {
                 System.out.println("3. Tutor Docente");
                 System.out.println("4. Tutor Empresa");
                 System.out.println("5. Visita");
-                System.out.println("6. Programas");
-                System.out.println("7. Salir");
+                System.out.println("6. Programa");
+                System.out.println("7. Práctica");
+                System.out.println("8. Salir");
                 System.out.print("Seleccione una opción: ");
 
-                opcion = leerOpcion(1, 6); // Ajustar el rango de opciones
+                opcion = leerOpcion(1, 8); // Ajustar el rango de opciones
 
                 switch (opcion) {
                     case 1:
@@ -49,6 +49,9 @@ public class GestionApp {
                         menuPrograma();
                         break;
                     case 7:
+                        menuPractica();
+                        break;
+                    case 8:
                         System.out.println("Cerrando la aplicación...");
                         break;
                 }
@@ -196,7 +199,7 @@ public class GestionApp {
         do {
             System.out.println("Gestión de Visita:");
             System.out.println("1. Crear Visita");
-            System.out.println("2. Leer Visita");
+            System.out.println("2. Leer Visitas");
             System.out.println("3. Modificar Visita");
             System.out.println("4. Borrar Visita");
             System.out.println("5. Volver al menú principal");
@@ -247,6 +250,39 @@ public class GestionApp {
                     break;
             }
         }
+    }
+    
+    private void menuPractica() {
+        int opcion;
+        do {
+            System.out.println("Gestión de Prácticas:");
+            System.out.println("1. Crear Práctica");
+            System.out.println("2. Leer Prácticas");
+            System.out.println("3. Modificar Práctica");
+            System.out.println("4. Borrar Práctica");
+            System.out.println("5. Volver al menú principal");
+            System.out.print("Seleccione una opción: ");
+
+            opcion = leerOpcion(1, 5);
+
+            switch (opcion) {
+                case 1:
+                    crearPractica();
+                    break;
+                case 2:
+                    leerPractica();
+                    break;
+                case 3:
+                    modificarPractica();
+                    break;
+                case 4:
+                    borrarPractica();
+                    break;
+                case 5:
+                    System.out.println("Volviendo al menú principal...");
+                    break;
+            }
+        } while (opcion != 5);
     }
 
     //Crear
@@ -359,9 +395,7 @@ public class GestionApp {
                 "\\d{2}/\\d{2}/\\d{4}",
                 "La fecha debe estar en formato dd/MM/yyyy.");
         String observaciones = sc.nextLine();
-        int id_asignacion = leerIdAsignacion(); //@TO-DO CRUD tabla practica
-        //String telefono = leerEntrada("Teléfono (Solo números): ", "^[0-9 ]+$",
-        //        "El teléfono solo puede contener números y espacios.");
+        int id_asignacion = leerIdAsignacion("ID de la práctica.");
         
         Date fechaConversa = leerFecha(fecha);
 
@@ -395,6 +429,46 @@ public class GestionApp {
 
         } catch (SQLException e) {
             System.err.println("Error al crear programa: " + e.getMessage());
+        }
+    }
+    
+    private void crearPractica() {
+        String fechaInicio = leerEntrada("Fecha inicio (dd/MM/yyyy)", 
+                "\\d{2}/\\d{2}/\\d{4}",
+                "La fecha debe estar en formato dd/MM/yyyy.");
+        String fechaFin = leerEntrada("Fecha fin (dd/MM/yyyy)", 
+                "\\d{2}/\\d{2}/\\d{4}",
+                "La fecha debe estar en formato dd/MM/yyyy.");
+        String estado = sc.nextLine();
+        
+        System.out.println("ID del alumno: ");
+        int id_alumno = leerIdAlumno(sc.nextLine());
+        System.out.println("ID de la empresa: ");
+        int id_empresa = leerIdEmpresa(sc.nextLine());
+        System.out.println("ID del tutor docente: ");
+        int id_tutor_docente = leerIdTutorDocente(sc.nextLine());
+        System.out.println("ID del tutor de la empresa: ");
+        int id_tutor_empresa = leerIdTutorEmpresa(sc.nextLine());
+        
+        Date fechaInicioConversa = leerFecha(fechaInicio);
+        Date fechaFinConversa = leerFecha(fechaFin);
+
+        String insertQuery = "INSERT INTO visita (fecha_inicio, fecha_fin, estado, id_alumno, id_empresa, id_tutor_docente, id_tutor_empresa) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+
+            preparedStatement.setDate(1, fechaInicioConversa);
+            preparedStatement.setDate(2, fechaFinConversa);
+            preparedStatement.setString(3, estado);
+            preparedStatement.setInt(4, id_alumno);
+            preparedStatement.setInt(5, id_empresa);
+            preparedStatement.setInt(6, id_tutor_docente);
+            preparedStatement.setInt(7, id_tutor_empresa);
+
+            int filasAfectadas = preparedStatement.executeUpdate();
+            System.out.println("Práctica creada. Filas afectadas: " + filasAfectadas);
+
+        } catch (SQLException e) {
+            System.err.println("Error al crear práctica: " + e.getMessage());
         }
     }
 
@@ -505,6 +579,28 @@ public class GestionApp {
 
         } catch (SQLException e) {
             System.err.println("Error al leer los programas: " + e.getMessage());
+        }
+    }
+    
+    private void leerPractica() {
+        String query = "SELECT * FROM practica";
+
+        try (Connection connection = ConnectionPool.getConnection(); Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(query)) {
+
+            while (resultSet.next()) {
+                System.out.println("ID asignacion: " + resultSet.getInt("id_asignacion"));
+                System.out.println("Fecha inicio: " + resultSet.getDate("fecha_inicio"));
+                System.out.println("Fecha fin: " + resultSet.getDate("fecha_fin"));
+                System.out.println("Estado: " + resultSet.getString("estado"));
+                System.out.println("ID del alumno: " + resultSet.getInt("id_alumno"));
+                System.out.println("ID de la empresa: " + resultSet.getInt("id_empresa"));
+                System.out.println("ID del tutor docente: " + resultSet.getInt("id_tutor_docente"));
+                System.out.println("ID del tutor de la empresa " + resultSet.getInt("id_tutor_empresa"));
+                System.out.println("-----------------------------------");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error al leer las practicas: " + e.getMessage());
         }
     }
 
@@ -631,7 +727,7 @@ public class GestionApp {
                 "\\d{2}/\\d{2}/\\d{4}",
                 "La fecha debe estar en formato dd/MM/yyyy.");
         String observaciones = sc.nextLine();
-        int id_asignacion = leerIdAsignacion(); //@TO-DO CRUD tabla asignacion
+        int id_asignacion = leerIdAsignacion("ID de la práctica.");
         
         
         Date fechaConversa = leerFecha(fecha);
@@ -649,6 +745,49 @@ public class GestionApp {
 
         } catch (SQLException e) {
             System.err.println("Error al actualizar visita: " + e.getMessage());
+        }
+    }
+    
+    private void modificarPractica() {
+        int id_asignacion = leerIdAsignacion("ID de la práctica a modificar: ");
+
+        String fechaInicio = leerEntrada("Fecha inicio (dd/MM/yyyy)", 
+                "\\d{2}/\\d{2}/\\d{4}",
+                "La fecha debe estar en formato dd/MM/yyyy.");
+        String fechaFin = leerEntrada("Fecha fin (dd/MM/yyyy)", 
+                "\\d{2}/\\d{2}/\\d{4}",
+                "La fecha debe estar en formato dd/MM/yyyy.");
+        String estado = sc.nextLine();
+        
+        System.out.println("ID del alumno: ");
+        int id_alumno = leerIdAlumno(sc.nextLine());
+        System.out.println("ID de la empresa: ");
+        int id_empresa = leerIdEmpresa(sc.nextLine());
+        System.out.println("ID del tutor docente: ");
+        int id_tutor_docente = leerIdTutorDocente(sc.nextLine());
+        System.out.println("ID del tutor de la empresa: ");
+        int id_tutor_empresa = leerIdTutorEmpresa(sc.nextLine());
+        
+        Date fechaInicioConversa = leerFecha(fechaInicio);
+        Date fechaFinConversa = leerFecha(fechaFin);
+
+        String updateQuery = "UPDATE practica SET fecha_inicio = ?, fecha_fin = ?, estado = ?, id_alumno = ?, id_empresa = ?, id_tutor_docente = ?, id_tutor_empresa = ? WHERE id_asignacion = ?";
+        try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+
+            preparedStatement.setDate(1, fechaInicioConversa);
+            preparedStatement.setDate(2, fechaFinConversa);
+            preparedStatement.setString(3, estado);
+            preparedStatement.setInt(4, id_alumno);
+            preparedStatement.setInt(5, id_empresa);
+            preparedStatement.setInt(6, id_tutor_docente);
+            preparedStatement.setInt(7, id_tutor_empresa);
+            preparedStatement.setInt(8, id_asignacion);
+
+            int filasAfectadas = preparedStatement.executeUpdate();
+            System.out.println("Práctica actualizada. Filas afectadas: " + filasAfectadas);
+
+        } catch (SQLException e) {
+            System.err.println("Error al actualizar práctica: " + e.getMessage());
         }
     }
 
@@ -720,6 +859,20 @@ public class GestionApp {
 
         } catch (SQLException e) {
             System.err.println("Error al eliminar la visita: " + e.getMessage());
+        }
+    }
+    
+    private void borrarPractica() {
+        int id_asignacion = leerIdAsignacion("ID de la práctica a borrar: ");
+        String deleteQuery = "DELETE FROM practica WHERE id_asignacion = ?";
+        try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
+
+            preparedStatement.setInt(1, id_asignacion);
+            int filasAfectadas = preparedStatement.executeUpdate();
+            System.out.println("Práctica eliminada. Filas afectadas: " + filasAfectadas);
+
+        } catch (SQLException e) {
+            System.err.println("Error al eliminar la práctica: " + e.getMessage());
         }
     }
 
@@ -838,6 +991,21 @@ public class GestionApp {
             }
         }
     }
+    
+    private int leerIdAsignacion(String mensaje) {
+        while (true) {
+            System.out.print(mensaje);
+            String entrada = sc.nextLine();
+            if (entrada.matches("^[0-9]+$")) {
+                int id = Integer.parseInt(entrada);
+                if (existePractica(id)) {
+                    return id;
+                } else {
+                    System.out.println("Por favor, ingresa un ID válido (solo números).");
+                }
+            }
+        }
+    }
 
     //Leer datos
     private int leerIdPrograma(String mensaje) {
@@ -941,6 +1109,20 @@ public class GestionApp {
 
         } catch (SQLException e) {
             System.err.println("Error al verificar el ID de la visita: " + e.getMessage());
+            return false;
+        }
+    }
+    
+    private boolean existePractica(int id_asignacion) {
+        String query = "SELECT COUNT(*) FROM practica WHERE id_asingacion = ?";
+        try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id_asignacion);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getInt(1) > 0;
+            
+        } catch (SQLException e) {
+            System.err.println("Error l verificar el ID de la práctica: " + e.getMessage());
             return false;
         }
     }
