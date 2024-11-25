@@ -23,7 +23,8 @@ public class GestionApp {
                 System.out.println("3. Tutor Docente");
                 System.out.println("4. Tutor Empresa");
                 System.out.println("5. Visita");
-                System.out.println("6. Salir");
+                System.out.println("6. Programas");
+                System.out.println("7. Salir");
                 System.out.print("Seleccione una opción: ");
 
                 opcion = leerOpcion(1, 6); // Ajustar el rango de opciones
@@ -36,19 +37,22 @@ public class GestionApp {
                         menuEmpresa();
                         break;
                     case 3:
-                        menuTutorDocente(); // Llama al nuevo método
+                        menuTutorDocente(); 
                         break;
                     case 4:
-                        menuTutorEmpresa(); // Llama al nuevo método
+                        menuTutorEmpresa(); 
                         break;
                     case 5:
                         menuVisita();
                         break;
                     case 6:
+                        menuPrograma();
+                        break;
+                    case 7:
                         System.out.println("Cerrando la aplicación...");
                         break;
                 }
-            } while (opcion != 5);
+            } while (opcion != 7);
         } finally {
             ConnectionPool.close();
         }
@@ -220,24 +224,48 @@ public class GestionApp {
         } while (opcion != 5);
     }
 
+    private void menuPrograma() {
+        while (true) {
+            System.out.println("\n--- Menú Programa ---");
+            System.out.println("1. Crear programa");
+            System.out.println("2. Leer programas");
+            System.out.println("3. Volver al menú principal");
+            System.out.print("Seleccione una opción: ");
+
+            int opcion = leerOpcion(1, 3);
+
+            if (opcion == 3) {
+                break;
+            }
+
+            switch (opcion) {
+                case 1:
+                    crearPrograma();
+                    break;
+                case 2:
+                    leerPrograma();
+                    break;
+            }
+        }
+    }
+
     //Crear
     private void crearAlumno() {
         System.out.print("Nombre: ");
         String nombre = sc.nextLine();
 
-        System.out.print("Programa: ");
-        String programa = sc.nextLine();
+        int id_programa = leerIdPrograma("ID del programa: ");  // Se verifica que el id_programa sea válido
 
         String telefono = leerEntrada("Teléfono (Solo números): ", "^[0-9 ]+$",
                 "El teléfono solo puede contener números y espacios.");
         String correo = leerEntrada("Correo (Debe contener @): ", ".*@.*",
                 "El correo debe contener un '@'.");
 
-        String insertQuery = "INSERT INTO alumno (nombre, programa, telefono, correo) VALUES (?, ?, ?, ?)";
+        String insertQuery = "INSERT INTO alumno (nombre, id_programa, telefono, correo) VALUES (?, ?, ?, ?)";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
 
             preparedStatement.setString(1, nombre);
-            preparedStatement.setString(2, programa);
+            preparedStatement.setInt(2, id_programa);  // Insertar el id_programa en lugar de un nombre
             preparedStatement.setString(3, telefono);
             preparedStatement.setString(4, correo);
 
@@ -352,6 +380,24 @@ public class GestionApp {
         }
     }
 
+    private void crearPrograma() {
+        System.out.print("Nombre del programa: ");
+        String nombre = sc.nextLine();
+
+        // Aquí puedes agregar más detalles si el programa tiene más atributos.
+        String insertQuery = "INSERT INTO programa (nombre_programa) VALUES (?)";
+        try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+
+            preparedStatement.setString(1, nombre);  // Insertar el nombre del programa
+
+            int filasAfectadas = preparedStatement.executeUpdate();
+            System.out.println("Programa creado. Filas afectadas: " + filasAfectadas);
+
+        } catch (SQLException e) {
+            System.err.println("Error al crear programa: " + e.getMessage());
+        }
+    }
+
     //Leer
     private void leerAlumno() {
         String query = "SELECT * FROM alumno";
@@ -361,7 +407,7 @@ public class GestionApp {
             while (resultSet.next()) {
                 System.out.println("ID: " + resultSet.getInt("id_alumno"));
                 System.out.println("Nombre: " + resultSet.getString("nombre"));
-                System.out.println("Programa: " + resultSet.getString("programa"));
+                System.out.println("Programa: " + resultSet.getString("id_programa"));
                 System.out.println("Teléfono: " + resultSet.getString("telefono"));
                 System.out.println("Correo: " + resultSet.getString("correo"));
                 System.out.println("-----------------------------------");
@@ -446,6 +492,22 @@ public class GestionApp {
 
     }
 
+    private void leerPrograma() {
+        String query = "SELECT * FROM programa";
+
+        try (Connection connection = ConnectionPool.getConnection(); Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(query)) {
+
+            while (resultSet.next()) {
+                System.out.println("ID Programa: " + resultSet.getInt("id_programa"));
+                System.out.println("Nombre: " + resultSet.getString("nombre_programa"));
+                System.out.println("-----------------------------------");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error al leer los programas: " + e.getMessage());
+        }
+    }
+
     //Modificar
     private void modificarAlumno() {
         int id_alumno = leerIdAlumno("ID del alumno a modificar: ");
@@ -453,19 +515,18 @@ public class GestionApp {
         System.out.print("Nombre: ");
         String nombre = sc.nextLine();
 
-        System.out.print("Programa: ");
-        String programa = sc.nextLine();
+        int id_programa = leerIdPrograma("Nuevo ID del programa: ");  // Validar ID del programa antes de modificar
 
         String telefono = leerEntrada("Teléfono (Solo números): ", "^[0-9 ]+$",
                 "El teléfono solo puede contener números y espacios.");
         String correo = leerEntrada("Correo (Debe contener @): ", ".*@.*",
                 "El correo debe contener un '@'.");
 
-        String updateQuery = "UPDATE alumno SET nombre = ?, programa = ?, telefono = ?, correo = ? WHERE id_alumno = ?";
+        String updateQuery = "UPDATE alumno SET nombre = ?, id_programa = ?, telefono = ?, correo = ? WHERE id_alumno = ?";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
 
             preparedStatement.setString(1, nombre);
-            preparedStatement.setString(2, programa);
+            preparedStatement.setInt(2, id_programa);  // Actualizar con el id_programa
             preparedStatement.setString(3, telefono);
             preparedStatement.setString(4, correo);
             preparedStatement.setInt(5, id_alumno);
@@ -570,7 +631,7 @@ public class GestionApp {
                 "\\d{2}/\\d{2}/\\d{4}",
                 "La fecha debe estar en formato dd/MM/yyyy.");
         String observaciones = sc.nextLine();
-        int id_asignacion = leerIdAsignacion() //@TO-DO CRUD tabla asignacion
+        int id_asignacion = leerIdAsignacion(); //@TO-DO CRUD tabla asignacion
         
         
         Date fechaConversa = leerFecha(fecha);
@@ -777,8 +838,26 @@ public class GestionApp {
             }
         }
     }
-    //Leer datos
 
+    //Leer datos
+    private int leerIdPrograma(String mensaje) {
+        while (true) {
+            System.out.print(mensaje);
+            String entrada = sc.nextLine();  // Leer como String para validar
+            if (entrada.matches("^[0-9]+$")) {  // Verificar que solo contenga números
+                int id = Integer.parseInt(entrada);  // Convertir a entero
+                if (existePrograma(id)) {
+                    return id;  // Si el ID es válido, retornamos
+                } else {
+                    System.out.println("El ID ingresado no corresponde a ningún programa existente. Intenta nuevamente.");
+                }
+            } else {
+                System.out.println("Por favor, ingresa un ID válido (solo números).");
+            }
+        }
+    }
+
+    //Leer datos
     private String leerEntrada(String mensaje, String regex, String errorMensaje) {
         while (true) {
             System.out.print(mensaje);
@@ -862,6 +941,21 @@ public class GestionApp {
 
         } catch (SQLException e) {
             System.err.println("Error al verificar el ID de la visita: " + e.getMessage());
+            return false;
+        }
+    }
+
+    private boolean existePrograma(int id_programa) {
+        String query = "SELECT COUNT(*) FROM programa WHERE id_programa = ?";
+        try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, id_programa);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getInt(1) > 0;
+
+        } catch (SQLException e) {
+            System.err.println("Error al verificar el ID del programa: " + e.getMessage());
             return false;
         }
     }
