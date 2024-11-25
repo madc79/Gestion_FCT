@@ -439,6 +439,8 @@ public class GestionApp {
         String fechaFin = leerEntrada("Fecha fin (dd/MM/yyyy)", 
                 "\\d{2}/\\d{2}/\\d{4}",
                 "La fecha debe estar en formato dd/MM/yyyy.");
+        
+        System.out.println("Estado de la práctica: ");
         String estado = sc.nextLine();
         
         System.out.println("ID del alumno: ");
