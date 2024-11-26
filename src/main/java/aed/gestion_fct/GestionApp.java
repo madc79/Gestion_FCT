@@ -400,11 +400,10 @@ public class GestionApp {
         String fecha = leerEntrada("Fecha (dd/MM/yyyy): ", 
                 "\\d{2}/\\d{2}/\\d{4}",
                 "La fecha debe estar en formato dd/MM/yyyy.");
+        Date fechaConversa = leerFecha(fecha);
         System.out.println("Introduzca observación en caso de haberla: ");
         String observaciones = sc.nextLine();
         int id_asignacion = leerIdAsignacion("Introduzca el ID de la práctica: ");
-        
-        Date fechaConversa = leerFecha(fecha);
 
         String insertQuery = "INSERT INTO visita (fecha, observaciones, id_asignacion) VALUES (?, ?, ?)";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
@@ -939,17 +938,25 @@ public class GestionApp {
     }
     
     private Date leerFecha(String fechaInput) {
-        while (true) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            
-            try {
-                Date fecha = Date.valueOf(fechaInput);
-                return fecha;
-            } catch (Exception e) { 
-                System.out.println("Fecha introducida errónea, introduzca la fecha en formato dd/MM/yyyy");
-            }
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    dateFormat.setLenient(false); // Validación estricta de la fecha
+
+    while (true) {
+        try {
+            // Intentar analizar la fecha con formato estricto
+            java.util.Date fecha = dateFormat.parse(fechaInput);
+            return new java.sql.Date(fecha.getTime()); // Convertir a java.sql.Date si es necesario
+        } catch (Exception e) {
+            System.out.println("Fecha introducida errónea, asegurese de haber introducido el formato dd/MM/yyyy y que los datos introducidos sean válidos.");
+
+            // Solicitar una nueva entrada
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Introduzca la fecha: ");
+            fechaInput = scanner.nextLine();
         }
     }
+}
+
 
     //Leer ID
     private int leerIdAlumno(String mensaje) {
