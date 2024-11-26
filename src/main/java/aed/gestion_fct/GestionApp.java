@@ -397,11 +397,12 @@ public class GestionApp {
     
     private void crearVisita() {
         
-        String fecha = leerEntrada("Fecha (dd/MM/yyyy)", 
+        String fecha = leerEntrada("Fecha (dd/MM/yyyy): ", 
                 "\\d{2}/\\d{2}/\\d{4}",
                 "La fecha debe estar en formato dd/MM/yyyy.");
+        System.out.println("Introduzca observación en caso de haberla: ");
         String observaciones = sc.nextLine();
-        int id_asignacion = leerIdAsignacion("ID de la práctica.");
+        int id_asignacion = leerIdAsignacion("Introduzca el ID de la práctica: ");
         
         Date fechaConversa = leerFecha(fecha);
 
@@ -731,7 +732,7 @@ public class GestionApp {
     private void modificarVisita() {
         int id_visita = leerIdVisita("ID de la visita a modificar: ");
 
-        String fecha = leerEntrada("Fecha (dd/MM/yyyy)", 
+        String fecha = leerEntrada("Fecha (dd/MM/yyyy): ", 
                 "\\d{2}/\\d{2}/\\d{4}",
                 "La fecha debe estar en formato dd/MM/yyyy.");
         String observaciones = sc.nextLine();
