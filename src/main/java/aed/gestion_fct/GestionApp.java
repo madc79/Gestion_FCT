@@ -248,6 +248,12 @@ public class GestionApp {
                 case 2:
                     leerPrograma();
                     break;
+                case 3:
+                    modificarPrograma();
+                    break;
+                case 4:
+                    borrarPrograma();
+                    break;
             }
         }
     }
@@ -750,6 +756,27 @@ public class GestionApp {
         }
     }
     
+    private void modificarPrograma() {
+        // A modificar porque Joel es gilipollas
+        int id_programa = leerIdPrograma("ID del programa a modificar: ");
+
+        System.out.print("Nombre del programa: ");
+        String nombre = sc.nextLine();
+
+        String updateQuery = "UPDATE programa SET nombre = ? WHERE id_programa = ?";
+        try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+
+            preparedStatement.setString(1, nombre);
+            preparedStatement.setInt(2, id_programa);
+
+            int filasAfectadas = preparedStatement.executeUpdate();
+            System.out.println("Programa actualizado. Filas afectadas: " + filasAfectadas);
+
+        } catch (SQLException e) {
+            System.err.println("Error al actualizar el programa: " + e.getMessage());
+        }
+    }
+    
     private void modificarPractica() {
         int id_asignacion = leerIdAsignacion("ID de la práctica a modificar: ");
 
@@ -861,6 +888,21 @@ public class GestionApp {
 
         } catch (SQLException e) {
             System.err.println("Error al eliminar la visita: " + e.getMessage());
+        }
+    }
+    
+    private void borrarPrograma() {
+        // A cambiar porque Joel es gilipollas
+        int id_programa = leerIdPrograma("ID del programa a borrar: ");
+        String deleteQuery = "DELETE FROM programa WHERE id_programa = ?";
+        try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
+
+            preparedStatement.setInt(1, id_programa);
+            int filasAfectadas = preparedStatement.executeUpdate();
+            System.out.println("Programa eliminado. Filas afectadas: " + filasAfectadas);
+
+        } catch (SQLException e) {
+            System.err.println("Error al eliminar el programa: " + e.getMessage());
         }
     }
     
