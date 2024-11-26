@@ -227,6 +227,40 @@ public class GestionApp {
         } while (opcion != 5);
     }
 
+    // Menú Comentario
+    private void menuComentario() {
+        while (true) {
+            System.out.println("\n--- Menú Comentario ---");
+            System.out.println("1. Crear Comentario");
+            System.out.println("2. Leer Comentario");
+            System.out.println("3. Modificar Comentario");
+            System.out.println("4. Borrar Comentario");
+            System.out.println("5. Volver al menú principal");
+            System.out.print("Seleccione una opción: ");
+
+            int opcion = leerOpcion(1, 5);
+
+            if (opcion == 5) {
+                break;
+            }
+
+            switch (opcion) {
+                case 1:
+                    crearComentario();
+                    break;
+                case 2:
+                    leerComentario();
+                    break;
+                case 3:
+                    modificarComentario();
+                    break;
+                case 4:
+                    borrarComentario();
+                    break;
+            }
+        }
+    }
+
     private void menuPrograma() {
         while (true) {
             System.out.println("\n--- Menú Programa ---");
@@ -420,6 +454,32 @@ public class GestionApp {
         }
     }
 
+    private void crearComentario() {
+        System.out.println("Fecha: ");
+        String fechaIntroducida = sc.nextLine();
+
+        Date fecha = leerFecha(fechaIntroducida);
+
+        System.out.print("Detalle: ");
+        String detalle = sc.nextLine();
+
+        int id_empresa = sc.nextInt();
+
+        String insertQuery = "INSERT INTO comentario (fecha, detalle, id_empresa) VALUES (?, ?, ?)";
+        try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+
+            preparedStatement.setDate(1, fecha);
+            preparedStatement.setString(2, detalle);
+            preparedStatement.setInt(3, id_empresa);
+
+            int filasAfectadas = preparedStatement.executeUpdate();
+            System.out.println("Tutor de empresa creado. Filas afectadas: " + filasAfectadas);
+
+        } catch (SQLException e) {
+            System.err.println("Error al crear tutor de empresa: " + e.getMessage());
+        }
+    }
+
     private void crearPrograma() {
         System.out.print("Nombre del programa: ");
         String nombre = sc.nextLine();
@@ -572,6 +632,23 @@ public class GestionApp {
             System.err.println("Error al leer las visitas: " + e.getMessage());
         }
 
+    }
+
+    private void leerComentario() {
+        String query = "SELECT * FROM comentario";
+
+        try (Connection connection = ConnectionPool.getConnection(); Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(query)) {
+
+            while (resultSet.next()) {
+                System.out.println("Fecha: " + resultSet.getDate("fecha"));
+                System.out.println("Detalle: " + resultSet.getString("detalle"));
+                System.out.println("ID Empresa: " + resultSet.getInt("id_empresa"));
+                System.out.println("-----------------------------------");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error al leer los comentarios: " + e.getMessage());
+        }
     }
 
     private void leerPrograma() {
@@ -755,6 +832,35 @@ public class GestionApp {
             System.err.println("Error al actualizar visita: " + e.getMessage());
         }
     }
+
+    private void modificarComentario() {
+        int id_comentario = leerIdComentario("ID del tutor de empresa a modificar: ");
+
+        System.out.print("Fecha: ");
+        String fechaIntroducida = sc.nextLine();
+
+        Date fecha = leerFecha(fechaIntroducida);
+
+        System.out.println("Detalle: ");
+        String detalle = sc.nextLine();
+
+        int id_empresa = sc.nextInt();
+
+        String updateQuery = "UPDATE comentario SET fecha = ?, detalle = ?, id_empresa = ? WHERE id_comentario = ?";
+        try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+
+            preparedStatement.setDate(1, fecha);
+            preparedStatement.setString(2, detalle);
+            preparedStatement.setInt(3, id_empresa);
+            preparedStatement.setInt(4, id_comentario);
+
+            int filasAfectadas = preparedStatement.executeUpdate();
+            System.out.println("Comentario actualizado. Filas afectadas: " + filasAfectadas);
+
+        } catch (SQLException e) {
+            System.err.println("Error al actualizar el comentario: " + e.getMessage());
+        }
+    }
     
     private void modificarPrograma() {
         // A modificar porque Joel es gilipollas
@@ -888,6 +994,20 @@ public class GestionApp {
 
         } catch (SQLException e) {
             System.err.println("Error al eliminar la visita: " + e.getMessage());
+        }
+    }
+
+    private void borrarComentario() {
+        int id_comentario = leerIdComentario("ID del tutor de empresa a borrar: ");
+        String deleteQuery = "DELETE FROM comentario WHERE id_comentario = ?";
+        try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
+
+            preparedStatement.setInt(1, id_comentario);
+            int filasAfectadas = preparedStatement.executeUpdate();
+            System.out.println("Comentario eliminado. Filas afectadas: " + filasAfectadas);
+
+        } catch (SQLException e) {
+            System.err.println("Error al eliminar el comentario: " + e.getMessage());
         }
     }
     
@@ -1035,6 +1155,23 @@ public class GestionApp {
             }
         }
     }
+
+    private int leerIdComentario(String mensaje) {
+        while (true) {
+            System.out.print(mensaje);
+            String entrada = sc.nextLine();  // Leer como String para validar
+            if (entrada.matches("^[0-9]+$")) {  // Verificar que solo contenga números
+                int id = Integer.parseInt(entrada);  // Convertir a entero
+                if (existeComentario(id)) {
+                    return id;  // Si el ID es válido, retornamos
+                } else {
+                    System.out.println("El ID ingresado no corresponde a ningún comentario. Intenta nuevamente.");
+                }
+            } else {
+                System.out.println("Por favor, ingresa un ID válido (solo números).");
+            }
+        }
+    }
     
     private int leerIdAsignacion(String mensaje) {
         while (true) {
@@ -1153,6 +1290,21 @@ public class GestionApp {
 
         } catch (SQLException e) {
             System.err.println("Error al verificar el ID de la visita: " + e.getMessage());
+            return false;
+        }
+    }
+
+    private boolean existeComentario(int id_comentario) {
+        String query = "SELECT COUNT(*) FROM comentario WHERE id_comentario = ?";
+        try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, id_comentario);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getInt(1) > 0;
+
+        } catch (SQLException e) {
+            System.err.println("Error al verificar el ID del comentario: " + e.getMessage());
             return false;
         }
     }
