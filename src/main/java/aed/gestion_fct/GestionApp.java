@@ -24,10 +24,11 @@ public class GestionApp {
                 System.out.println("5. Visita");
                 System.out.println("6. Programa");
                 System.out.println("7. Práctica");
-                System.out.println("8. Salir");
+                System.out.println("8. Comentario");
+                System.out.println("9. Salir");
                 System.out.print("Seleccione una opción: ");
 
-                opcion = leerOpcion(1, 8); // Ajustar el rango de opciones
+                opcion = leerOpcion(1, 9); // Ajustar el rango de opciones
 
                 switch (opcion) {
                     case 1:
@@ -52,10 +53,13 @@ public class GestionApp {
                         menuPractica();
                         break;
                     case 8:
+                        menuComentario();
+                        break;
+                    case 9:
                         System.out.println("Cerrando la aplicación...");
                         break;
                 }
-            } while (opcion != 7);
+            } while (opcion != 9);
         } finally {
             ConnectionPool.close();
         }
@@ -863,13 +867,12 @@ public class GestionApp {
     }
     
     private void modificarPrograma() {
-        // A modificar porque Joel es gilipollas
         int id_programa = leerIdPrograma("ID del programa a modificar: ");
 
         System.out.print("Nombre del programa: ");
         String nombre = sc.nextLine();
 
-        String updateQuery = "UPDATE programa SET nombre = ? WHERE id_programa = ?";
+        String updateQuery = "UPDATE programa SET nombre_programa = ? WHERE id_programa = ?";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
 
             preparedStatement.setString(1, nombre);
@@ -1012,7 +1015,6 @@ public class GestionApp {
     }
     
     private void borrarPrograma() {
-        // A cambiar porque Joel es gilipollas
         int id_programa = leerIdPrograma("ID del programa a borrar: ");
         String deleteQuery = "DELETE FROM programa WHERE id_programa = ?";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
