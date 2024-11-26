@@ -1186,14 +1186,16 @@ public class GestionApp {
     private int leerIdAsignacion(String mensaje) {
         while (true) {
             System.out.print(mensaje);
-            String entrada = sc.nextLine();
-            if (entrada.matches("^[0-9]+$")) {
-                int id = Integer.parseInt(entrada);
+            String entrada = sc.nextLine();  // Leer como String para validar
+            if (entrada.matches("^[0-9]+$")) {  // Verificar que solo contenga números
+                int id = Integer.parseInt(entrada);  // Convertir a entero
                 if (existePractica(id)) {
-                    return id;
+                    return id;  // Si el ID es válido, retornamos
                 } else {
-                    System.out.println("Por favor, ingresa un ID válido (solo números).");
+                    System.out.println("El ID ingresado no corresponde a ninguna práctica. Intenta nuevamente.");
                 }
+            } else {
+                System.out.println("Por favor, ingresa un ID válido (solo números).");
             }
         }
     }
