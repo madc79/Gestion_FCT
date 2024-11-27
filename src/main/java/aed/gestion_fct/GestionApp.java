@@ -336,6 +336,10 @@ public class GestionApp {
         System.out.print("Nombre: ");
         String nombre = sc.nextLine();
 
+        System.out.println();
+        System.out.println("Programas disponibles:");
+        System.out.println();
+        
         leerPrograma();
         int id_programa = leerIdPrograma("ID del programa: ");  // Se verifica que el id_programa sea válido
 
@@ -730,6 +734,11 @@ public class GestionApp {
         System.out.print("Nombre: ");
         String nombre = sc.nextLine();
 
+        System.out.println();
+        System.out.println("Programas disponibles:");
+        System.out.println();
+        
+        leerPrograma();
         int id_programa = leerIdPrograma("Nuevo ID del programa: ");  // Validar ID del programa antes de modificar
 
         String telefono = leerEntrada("Teléfono (Solo números): ", "^[0-9 ]+$",
@@ -851,6 +860,8 @@ public class GestionApp {
         
         System.out.println();
         System.out.println("Prácticas disponibles:");
+        System.out.println();
+        
         leerPractica();
         int id_asignacion = leerIdAsignacion("ID de la práctica: ");
         
