@@ -336,6 +336,7 @@ public class GestionApp {
         System.out.print("Nombre: ");
         String nombre = sc.nextLine();
 
+        leerPrograma();
         int id_programa = leerIdPrograma("ID del programa: ");  // Se verifica que el id_programa sea válido
 
         String telefono = leerEntrada("Teléfono (Solo números): ", "^[0-9 ]+$",
@@ -627,8 +628,8 @@ public class GestionApp {
             while (resultSet.next()) {
                 System.out.println("ID: " + resultSet.getInt("id_visita"));
                 System.out.println("Fecha: " + resultSet.getDate("fecha"));
-                System.out.println("Teléfono: " + resultSet.getString("observaciones"));
-                System.out.println("Correo: " + resultSet.getInt("id_asignacion"));
+                System.out.println("Observaciones: " + resultSet.getString("observaciones"));
+                System.out.println("Práctica: " + resultSet.getInt("id_asignacion"));
                 System.out.println("-----------------------------------");
             }
 
@@ -695,6 +696,7 @@ public class GestionApp {
 
     //Modificar
     private void modificarAlumno() {
+        
         int id_alumno = leerIdAlumno("ID del alumno a modificar: ");
 
         System.out.print("Nombre: ");
@@ -815,8 +817,12 @@ public class GestionApp {
         String fecha = leerEntrada("Fecha (dd/MM/yyyy): ", 
                 "\\d{2}/\\d{2}/\\d{4}",
                 "La fecha debe estar en formato dd/MM/yyyy.");
+        
+        System.out.println("Introduzca observación en caso de haberla:");
         String observaciones = sc.nextLine();
-        int id_asignacion = leerIdAsignacion("ID de la práctica.");
+        
+        leerPractica();
+        int id_asignacion = leerIdAsignacion("ID de la práctica: ");
         
         
         Date fechaConversa = leerFecha(fecha);
