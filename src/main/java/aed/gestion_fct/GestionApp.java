@@ -469,9 +469,8 @@ public class GestionApp {
 
         System.out.print("Detalle: ");
         String detalle = sc.nextLine();
-
         
-        int id_empresa = leerIdEmpresa("ID de la empresa: ");
+        int id_empresa = leerIdEmpresa("ID de la empresa: ");  // Se verifica que el id_empresa sea válido y existe
 
         String insertQuery = "INSERT INTO comentario (fecha, detalle, id_empresa) VALUES (?, ?, ?)";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
@@ -510,9 +509,11 @@ public class GestionApp {
         String fechaInicio = leerEntrada("Fecha inicio (dd/MM/yyyy): ", 
                 "\\d{2}/\\d{2}/\\d{4}",
                 "La fecha debe estar en formato dd/MM/yyyy.");
+        Date fechaInicioConversa = leerFecha(fechaInicio);
         String fechaFin = leerEntrada("Fecha fin (dd/MM/yyyy): ", 
                 "\\d{2}/\\d{2}/\\d{4}",
                 "La fecha debe estar en formato dd/MM/yyyy.");
+        Date fechaFinConversa = leerFecha(fechaFin);
         
         System.out.println("Estado de la práctica: ");
         String estado = sc.nextLine();
@@ -522,8 +523,6 @@ public class GestionApp {
         int id_tutor_docente = leerIdTutorDocente("ID del tutor docente: ");
         int id_tutor_empresa = leerIdTutorEmpresa("ID del tutor de la empresa: ");
         
-        Date fechaInicioConversa = leerFecha(fechaInicio);
-        Date fechaFinConversa = leerFecha(fechaFin);
 
         String insertQuery = "INSERT INTO practica (fecha_inicio, fecha_fin, estado, id_alumno, id_empresa, id_tutor_docente, id_tutor_empresa) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
@@ -644,6 +643,7 @@ public class GestionApp {
         try (Connection connection = ConnectionPool.getConnection(); Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(query)) {
 
             while (resultSet.next()) {
+                System.out.println("ID Comentario: " + resultSet.getDate("id_comentario"));
                 System.out.println("Fecha: " + resultSet.getDate("fecha"));
                 System.out.println("Detalle: " + resultSet.getString("detalle"));
                 System.out.println("ID Empresa: " + resultSet.getInt("id_empresa"));
@@ -849,7 +849,7 @@ public class GestionApp {
         System.out.print("Detalle: ");
         String detalle = sc.nextLine();
 
-        int id_empresa = leerIdEmpresa("ID de la empresa: ");
+        int id_empresa = leerIdEmpresa("ID de la empresa: ");  // Se verifica que el id_empresa sea válido y existe
 
         String updateQuery = "UPDATE comentario SET fecha = ?, detalle = ?, id_empresa = ? WHERE id_comentario = ?";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
