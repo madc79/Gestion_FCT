@@ -510,9 +510,11 @@ public class GestionApp {
         String fechaInicio = leerEntrada("Fecha inicio (dd/MM/yyyy): ", 
                 "\\d{2}/\\d{2}/\\d{4}",
                 "La fecha debe estar en formato dd/MM/yyyy.");
+        Date fechaInicioConversa = leerFecha(fechaInicio);
         String fechaFin = leerEntrada("Fecha fin (dd/MM/yyyy): ", 
                 "\\d{2}/\\d{2}/\\d{4}",
                 "La fecha debe estar en formato dd/MM/yyyy.");
+        Date fechaFinConversa = leerFecha(fechaFin);
         
         System.out.println("Estado de la práctica: ");
         String estado = sc.nextLine();
@@ -522,8 +524,6 @@ public class GestionApp {
         int id_tutor_docente = leerIdTutorDocente("ID del tutor docente: ");
         int id_tutor_empresa = leerIdTutorEmpresa("ID del tutor de la empresa: ");
         
-        Date fechaInicioConversa = leerFecha(fechaInicio);
-        Date fechaFinConversa = leerFecha(fechaFin);
 
         String insertQuery = "INSERT INTO practica (fecha_inicio, fecha_fin, estado, id_alumno, id_empresa, id_tutor_docente, id_tutor_empresa) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
