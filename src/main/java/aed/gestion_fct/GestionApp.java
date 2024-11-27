@@ -471,7 +471,11 @@ public class GestionApp {
         System.out.print("Detalle: ");
         String detalle = sc.nextLine();
 
+        System.out.println();
+        System.out.println("Empresas disponibles: ");
+        System.out.println();
         
+        leerEmpresa();
         int id_empresa = leerIdEmpresa("ID de la empresa: ");
 
         String insertQuery = "INSERT INTO comentario (fecha, detalle, id_empresa) VALUES (?, ?, ?)";
@@ -520,9 +524,32 @@ public class GestionApp {
         System.out.println("Estado de la práctica: ");
         String estado = sc.nextLine();
         
+        System.out.println();
+        System.out.println("Alumnos disponibles: ");
+        System.out.println();
+        
+        leerAlumno();
         int id_alumno = leerIdAlumno("ID del alumno: ");
+        
+        System.out.println();
+        System.out.println("Empresas disponibles:");
+        System.out.println();
+        
+        leerEmpresa();
         int id_empresa = leerIdEmpresa("ID de la empresa: ");
+        
+        System.out.println();
+        System.out.println("Tutores docentes disponibles:");
+        System.out.println();
+        
+        leerTutorDocente();
         int id_tutor_docente = leerIdTutorDocente("ID del tutor docente: ");
+        
+        System.out.println();
+        System.out.println("Tutores de empresa disponibles:");
+        System.out.println();
+        
+        leerTutorEmpresa();
         int id_tutor_empresa = leerIdTutorEmpresa("ID del tutor de la empresa: ");
         
 
@@ -821,6 +848,8 @@ public class GestionApp {
         System.out.println("Introduzca observación en caso de haberla:");
         String observaciones = sc.nextLine();
         
+        System.out.println();
+        System.out.println("Prácticas disponibles:");
         leerPractica();
         int id_asignacion = leerIdAsignacion("ID de la práctica: ");
         
@@ -855,6 +884,9 @@ public class GestionApp {
         System.out.print("Detalle: ");
         String detalle = sc.nextLine();
 
+        System.out.println();
+        System.out.println("Empresas disponibles: ");
+        leerEmpresa();
         int id_empresa = leerIdEmpresa("ID de la empresa: ");
 
         String updateQuery = "UPDATE comentario SET fecha = ?, detalle = ?, id_empresa = ? WHERE id_comentario = ?";
@@ -906,9 +938,32 @@ public class GestionApp {
         System.out.print("Estado de la práctica: ");
         String estado = sc.nextLine();
         
+        System.out.println();
+        System.out.println("Alumnos disponibles: ");
+        System.out.println();
+        
+        leerAlumno();
         int id_alumno = leerIdAlumno("ID del alumno: ");
+        
+        System.out.println();
+        System.out.println("Empresas disponibles:");
+        System.out.println();
+        
+        leerEmpresa();
         int id_empresa = leerIdEmpresa("ID de la empresa: ");
+        
+        System.out.println();
+        System.out.println("Tutores docentes disponibles:");
+        System.out.println();
+        
+        leerTutorDocente();
         int id_tutor_docente = leerIdTutorDocente("ID del tutor docente: ");
+        
+        System.out.println();
+        System.out.println("Tutores de empresa disponibles:");
+        System.out.println();
+        
+        leerTutorEmpresa();
         int id_tutor_empresa = leerIdTutorEmpresa("ID del tutor de la empresa: ");
         
         Date fechaInicioConversa = leerFecha(fechaInicio);
