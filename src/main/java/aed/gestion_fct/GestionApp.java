@@ -270,6 +270,8 @@ public class GestionApp {
             System.out.println("\n--- Menú Programa ---");
             System.out.println("1. Crear programa");
             System.out.println("2. Leer programas");
+            System.out.println("3. Modificar programa");
+            System.out.println("4. Borrar programa");
             System.out.println("3. Volver al menú principal");
             System.out.print("Seleccione una opción: ");
 
@@ -459,15 +461,17 @@ public class GestionApp {
     }
 
     private void crearComentario() {
-        System.out.println("Fecha: ");
-        String fechaIntroducida = sc.nextLine();
+        String fechaIntroducida = leerEntrada("Fecha del comentario (dd/MM/yyyy): ", 
+                "\\d{2}/\\d{2}/\\d{4}",
+                "La fecha debe estar en formato dd/MM/yyyy.");
 
         Date fecha = leerFecha(fechaIntroducida);
 
         System.out.print("Detalle: ");
         String detalle = sc.nextLine();
 
-        int id_empresa = sc.nextInt();
+        
+        int id_empresa = leerIdEmpresa("ID de la empresa: ");
 
         String insertQuery = "INSERT INTO comentario (fecha, detalle, id_empresa) VALUES (?, ?, ?)";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
@@ -503,29 +507,25 @@ public class GestionApp {
     }
     
     private void crearPractica() {
-        String fechaInicio = leerEntrada("Fecha inicio (dd/MM/yyyy)", 
+        String fechaInicio = leerEntrada("Fecha inicio (dd/MM/yyyy): ", 
                 "\\d{2}/\\d{2}/\\d{4}",
                 "La fecha debe estar en formato dd/MM/yyyy.");
-        String fechaFin = leerEntrada("Fecha fin (dd/MM/yyyy)", 
+        String fechaFin = leerEntrada("Fecha fin (dd/MM/yyyy): ", 
                 "\\d{2}/\\d{2}/\\d{4}",
                 "La fecha debe estar en formato dd/MM/yyyy.");
         
         System.out.println("Estado de la práctica: ");
         String estado = sc.nextLine();
         
-        System.out.println("ID del alumno: ");
-        int id_alumno = leerIdAlumno(sc.nextLine());
-        System.out.println("ID de la empresa: ");
-        int id_empresa = leerIdEmpresa(sc.nextLine());
-        System.out.println("ID del tutor docente: ");
-        int id_tutor_docente = leerIdTutorDocente(sc.nextLine());
-        System.out.println("ID del tutor de la empresa: ");
-        int id_tutor_empresa = leerIdTutorEmpresa(sc.nextLine());
+        int id_alumno = leerIdAlumno("ID del alumno: ");
+        int id_empresa = leerIdEmpresa("ID de la empresa: ");
+        int id_tutor_docente = leerIdTutorDocente("ID del tutor docente: ");
+        int id_tutor_empresa = leerIdTutorEmpresa("ID del tutor de la empresa: ");
         
         Date fechaInicioConversa = leerFecha(fechaInicio);
         Date fechaFinConversa = leerFecha(fechaFin);
 
-        String insertQuery = "INSERT INTO visita (fecha_inicio, fecha_fin, estado, id_alumno, id_empresa, id_tutor_docente, id_tutor_empresa) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String insertQuery = "INSERT INTO practica (fecha_inicio, fecha_fin, estado, id_alumno, id_empresa, id_tutor_docente, id_tutor_empresa) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
 
             preparedStatement.setDate(1, fechaInicioConversa);
@@ -684,7 +684,7 @@ public class GestionApp {
                 System.out.println("ID del alumno: " + resultSet.getInt("id_alumno"));
                 System.out.println("ID de la empresa: " + resultSet.getInt("id_empresa"));
                 System.out.println("ID del tutor docente: " + resultSet.getInt("id_tutor_docente"));
-                System.out.println("ID del tutor de la empresa " + resultSet.getInt("id_tutor_empresa"));
+                System.out.println("ID del tutor de la empresa: " + resultSet.getInt("id_tutor_empresa"));
                 System.out.println("-----------------------------------");
             }
 
@@ -838,17 +838,18 @@ public class GestionApp {
     }
 
     private void modificarComentario() {
-        int id_comentario = leerIdComentario("ID del tutor de empresa a modificar: ");
+        int id_comentario = leerIdComentario("ID del comentario a modificar: ");
 
-        System.out.print("Fecha: ");
-        String fechaIntroducida = sc.nextLine();
+        String fechaIntroducida = leerEntrada("Fecha del comentario (dd/MM/yyyy): ", 
+                "\\d{2}/\\d{2}/\\d{4}",
+                "La fecha debe estar en formato dd/MM/yyyy.");
 
         Date fecha = leerFecha(fechaIntroducida);
 
-        System.out.println("Detalle: ");
+        System.out.print("Detalle: ");
         String detalle = sc.nextLine();
 
-        int id_empresa = sc.nextInt();
+        int id_empresa = leerIdEmpresa("ID de la empresa: ");
 
         String updateQuery = "UPDATE comentario SET fecha = ?, detalle = ?, id_empresa = ? WHERE id_comentario = ?";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
@@ -889,22 +890,20 @@ public class GestionApp {
     private void modificarPractica() {
         int id_asignacion = leerIdAsignacion("ID de la práctica a modificar: ");
 
-        String fechaInicio = leerEntrada("Fecha inicio (dd/MM/yyyy)", 
+        String fechaInicio = leerEntrada("Fecha inicio (dd/MM/yyyy): ", 
                 "\\d{2}/\\d{2}/\\d{4}",
                 "La fecha debe estar en formato dd/MM/yyyy.");
-        String fechaFin = leerEntrada("Fecha fin (dd/MM/yyyy)", 
+        String fechaFin = leerEntrada("Fecha fin (dd/MM/yyyy): ", 
                 "\\d{2}/\\d{2}/\\d{4}",
                 "La fecha debe estar en formato dd/MM/yyyy.");
+        
+        System.out.print("Estado de la práctica: ");
         String estado = sc.nextLine();
         
-        System.out.println("ID del alumno: ");
-        int id_alumno = leerIdAlumno(sc.nextLine());
-        System.out.println("ID de la empresa: ");
-        int id_empresa = leerIdEmpresa(sc.nextLine());
-        System.out.println("ID del tutor docente: ");
-        int id_tutor_docente = leerIdTutorDocente(sc.nextLine());
-        System.out.println("ID del tutor de la empresa: ");
-        int id_tutor_empresa = leerIdTutorEmpresa(sc.nextLine());
+        int id_alumno = leerIdAlumno("ID del alumno: ");
+        int id_empresa = leerIdEmpresa("ID de la empresa: ");
+        int id_tutor_docente = leerIdTutorDocente("ID del tutor docente: ");
+        int id_tutor_empresa = leerIdTutorEmpresa("ID del tutor de la empresa: ");
         
         Date fechaInicioConversa = leerFecha(fechaInicio);
         Date fechaFinConversa = leerFecha(fechaFin);
@@ -1001,7 +1000,7 @@ public class GestionApp {
     }
 
     private void borrarComentario() {
-        int id_comentario = leerIdComentario("ID del tutor de empresa a borrar: ");
+        int id_comentario = leerIdComentario("ID del comentario a borrar: ");
         String deleteQuery = "DELETE FROM comentario WHERE id_comentario = ?";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
 
@@ -1322,7 +1321,7 @@ public class GestionApp {
     }
     
     private boolean existePractica(int id_asignacion) {
-        String query = "SELECT COUNT(*) FROM practica WHERE id_asingacion = ?";
+        String query = "SELECT COUNT(*) FROM practica WHERE id_asignacion = ?";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, id_asignacion);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -1330,7 +1329,7 @@ public class GestionApp {
             return resultSet.getInt(1) > 0;
             
         } catch (SQLException e) {
-            System.err.println("Error l verificar el ID de la práctica: " + e.getMessage());
+            System.err.println("Error al verificar el ID de la práctica: " + e.getMessage());
             return false;
         }
     }
