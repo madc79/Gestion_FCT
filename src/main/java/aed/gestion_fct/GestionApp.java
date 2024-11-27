@@ -672,6 +672,7 @@ public class GestionApp {
         try (Connection connection = ConnectionPool.getConnection(); Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(query)) {
 
             while (resultSet.next()) {
+                System.out.println("ID Comentario: " + resultSet.getDate("id_comentario"));
                 System.out.println("Fecha: " + resultSet.getDate("fecha"));
                 System.out.println("Detalle: " + resultSet.getString("detalle"));
                 System.out.println("ID Empresa: " + resultSet.getInt("id_empresa"));
@@ -883,7 +884,7 @@ public class GestionApp {
 
         System.out.print("Detalle: ");
         String detalle = sc.nextLine();
-
+      
         System.out.println();
         System.out.println("Empresas disponibles: ");
         leerEmpresa();
