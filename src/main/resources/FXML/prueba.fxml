@@ -8,22 +8,22 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/19">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
   <tabs>
-      <Tab text="Practicas">
+      <Tab fx:id="practicas" text="Practicas">
          <content>
             <BorderPane prefHeight="200.0" prefWidth="200.0">
                <center>
                   <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                     <columns>
-                      <TableColumn prefWidth="75.0" text="C1" />
-                      <TableColumn prefWidth="75.0" text="C2" />
-                        <TableColumn prefWidth="75.0" text="C2" />
-                        <TableColumn prefWidth="75.0" text="C2" />
-                        <TableColumn prefWidth="75.0" text="C2" />
-                        <TableColumn prefWidth="75.0" text="C2" />
-                        <TableColumn prefWidth="75.0" text="C2" />
-                        <TableColumn prefWidth="75.0" text="C2" />
+                      <TableColumn prefWidth="75.0" text="Asignación" />
+                      <TableColumn prefWidth="75.0" text="Fecha Inicio" />
+                        <TableColumn prefWidth="75.0" text="Fecha Fin" />
+                        <TableColumn prefWidth="75.0" text="Estado" />
+                        <TableColumn prefWidth="75.0" text="Alumno" />
+                        <TableColumn prefWidth="75.0" text="Empresa" />
+                        <TableColumn prefWidth="75.0" text="Tutor Docente" />
+                        <TableColumn prefWidth="75.0" text="Tutor Empresa" />
                     </columns>
                   </TableView>
                </center>
@@ -39,107 +39,146 @@
             </BorderPane>
          </content>
       </Tab>
-    <Tab text="Alumnos">
+    <Tab fx:id="alumnos" text="Alumnos">
          <content>
             <BorderPane prefHeight="200.0" prefWidth="200.0">
                <center>
                   <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                     <columns>
-                      <TableColumn prefWidth="75.0" text="C1" />
-                      <TableColumn prefWidth="75.0" text="C2" />
+                      <TableColumn prefWidth="75.0" text="Id" />
+                      <TableColumn prefWidth="75.0" text="Nombre" />
+                        <TableColumn prefWidth="75.0" text="Telefono" />
+                        <TableColumn prefWidth="75.0" text="Correo" />
+                        <TableColumn prefWidth="75.0" text="Programa" />
                     </columns>
                   </TableView>
                </center>
+               <bottom>
+                  <HBox alignment="CENTER" prefHeight="54.0" prefWidth="600.0" spacing="15.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Button mnemonicParsing="false" text="Crear nuevo" />
+                        <Button mnemonicParsing="false" text="Modificar" />
+                        <Button mnemonicParsing="false" text="Eliminar" />
+                     </children>
+                  </HBox>
+               </bottom>
             </BorderPane>
          </content></Tab>
-    <Tab text="Visitas">
+    <Tab fx:id="visitas" text="Visitas">
          <content>
             <BorderPane prefHeight="200.0" prefWidth="200.0">
                <bottom>
-                  <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                  <HBox alignment="CENTER" prefHeight="54.0" prefWidth="600.0" spacing="15.0">
                      <children>
-                        <HBox alignment="CENTER" prefHeight="54.0" prefWidth="600.0" spacing="15.0">
-                           <children>
-                              <Button mnemonicParsing="false" text="Crear nuevo" />
-                              <Button mnemonicParsing="false" text="Modificar" />
-                              <Button mnemonicParsing="false" text="Eliminar" />
-                           </children>
-                        </HBox>
+                        <Button mnemonicParsing="false" text="Crear nuevo" />
+                        <Button mnemonicParsing="false" text="Modificar" />
+                        <Button mnemonicParsing="false" text="Eliminar" />
                      </children>
                   </HBox>
                </bottom>
                <center>
                   <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                     <columns>
-                      <TableColumn prefWidth="75.0" text="C1" />
-                      <TableColumn prefWidth="75.0" text="C2" />
+                      <TableColumn prefWidth="75.0" text="Id" />
+                      <TableColumn prefWidth="75.0" text="Fecha" />
+                        <TableColumn prefWidth="75.0" text="Observaciones" />
+                        <TableColumn prefWidth="75.0" text="Asignación" />
                     </columns>
                   </TableView>
                </center>
             </BorderPane>
          </content></Tab>
-      <Tab text="Empresas">
+      <Tab fx:id="empresas" text="Empresas">
          <content>
             <BorderPane prefHeight="200.0" prefWidth="200.0">
                <bottom>
-                  <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                  <HBox alignment="CENTER" prefHeight="54.0" prefWidth="600.0" spacing="15.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Button mnemonicParsing="false" text="Crear nuevo" />
+                        <Button mnemonicParsing="false" text="Modificar" />
+                        <Button mnemonicParsing="false" text="Eliminar" />
+                     </children></HBox>
                </bottom>
                <center>
                   <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                     <columns>
-                      <TableColumn prefWidth="75.0" text="C1" />
-                      <TableColumn prefWidth="75.0" text="C2" />
+                      <TableColumn prefWidth="75.0" text="Id" />
+                      <TableColumn prefWidth="75.0" text="Nombre" />
+                        <TableColumn prefWidth="75.0" text="Dirección" />
+                        <TableColumn prefWidth="75.0" text="Teléfono" />
+                        <TableColumn prefWidth="75.0" text="Correo" />
                     </columns>
                   </TableView>
                </center>
             </BorderPane>
          </content>
       </Tab>
-      <Tab text="Tutores Empresas">
+      <Tab fx:id="tutoresEmpresas" text="Tutores Empresas">
          <content>
             <BorderPane prefHeight="200.0" prefWidth="200.0">
                <bottom>
-                  <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                  <HBox alignment="CENTER" prefHeight="54.0" prefWidth="600.0" spacing="15.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Button mnemonicParsing="false" text="Crear nuevo" />
+                        <Button mnemonicParsing="false" text="Modificar" />
+                        <Button mnemonicParsing="false" text="Eliminar" />
+                     </children></HBox>
                </bottom>
                <center>
                   <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                     <columns>
-                      <TableColumn prefWidth="75.0" text="C1" />
-                      <TableColumn prefWidth="75.0" text="C2" />
+                      <TableColumn prefWidth="75.0" text="Id" />
+                      <TableColumn prefWidth="75.0" text="Nombre" />
+                        <TableColumn prefWidth="75.0" text="Teléfono" />
+                        <TableColumn prefWidth="75.0" text="Correo" />
                     </columns>
                   </TableView>
                </center>
             </BorderPane>
          </content>
       </Tab>
-      <Tab text="Tutores Docentes">
+      <Tab fx:id="tutoresDocentes" text="Tutores Docentes">
          <content>
             <BorderPane prefHeight="200.0" prefWidth="200.0">
                <bottom>
-                  <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                  <HBox alignment="CENTER" prefHeight="54.0" prefWidth="600.0" spacing="15.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Button mnemonicParsing="false" text="Crear nuevo" />
+                        <Button mnemonicParsing="false" text="Modificar" />
+                        <Button mnemonicParsing="false" text="Eliminar" />
+                     </children></HBox>
                </bottom>
                <center>
                   <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                     <columns>
-                      <TableColumn prefWidth="75.0" text="C1" />
-                      <TableColumn prefWidth="75.0" text="C2" />
+                      <TableColumn prefWidth="75.0" text="Id" />
+                      <TableColumn prefWidth="75.0" text="Nombre" />
+                        <TableColumn prefWidth="75.0" text="Teléfono" />
+                        <TableColumn prefWidth="75.0" text="Correo" />
                     </columns>
                   </TableView>
                </center>
             </BorderPane>
          </content>
       </Tab>
-      <Tab text="Comentarios">
+      <Tab fx:id="comentarios" text="Comentarios">
          <content>
             <BorderPane prefHeight="200.0" prefWidth="200.0">
                <bottom>
-                  <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                  <HBox alignment="CENTER" prefHeight="54.0" prefWidth="600.0" spacing="15.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Button mnemonicParsing="false" text="Crear nuevo" />
+                        <Button mnemonicParsing="false" text="Modificar" />
+                        <Button mnemonicParsing="false" text="Eliminar" />
+                     </children></HBox>
                </bottom>
                <center>
                   <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                     <columns>
-                      <TableColumn prefWidth="75.0" text="C1" />
-                      <TableColumn prefWidth="75.0" text="C2" />
+                      <TableColumn prefWidth="75.0" text="Id" />
+                      <TableColumn prefWidth="75.0" text="Fecha" />
+                        <TableColumn prefWidth="75.0" text="Detalle" />
+                        <TableColumn prefWidth="75.0" text="Empresa" />
                     </columns>
                   </TableView>
                </center>
