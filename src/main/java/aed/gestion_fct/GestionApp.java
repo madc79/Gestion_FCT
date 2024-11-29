@@ -4,14 +4,28 @@ import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
+/**
+ * Clase principal para gestionar un sistema de administración de diferentes
+ * tablas en una base de datos. Proporciona menús para interactuar con varias
+ * entidades como alumnos, empresas, tutores, programas, visitas, prácticas y
+ * comentarios.
+ */
 public class GestionApp {
 
     private final Scanner sc;
 
+    /**
+     * Constructor que inicializa el Scanner para la entrada de datos.
+     */
     public GestionApp() {
         this.sc = new Scanner(System.in);
     }
 
+    /**
+     * Método principal que inicia la aplicación. Presenta un menú para que el
+     * usuario seleccione la tabla que desea gestionar. Incluye una opción para
+     * cerrar la aplicación.
+     */
     public void iniciarAplicacion() {
         int opcion;
         try {
@@ -28,7 +42,7 @@ public class GestionApp {
                 System.out.println("9. Salir");
                 System.out.print("Seleccione una opción: ");
 
-                opcion = leerOpcion(1, 9); // Ajustar el rango de opciones
+                opcion = leerOpcion(1, 9);
 
                 switch (opcion) {
                     case 1:
@@ -38,10 +52,10 @@ public class GestionApp {
                         menuEmpresa();
                         break;
                     case 3:
-                        menuTutorDocente(); 
+                        menuTutorDocente();
                         break;
                     case 4:
-                        menuTutorEmpresa(); 
+                        menuTutorEmpresa();
                         break;
                     case 5:
                         menuVisita();
@@ -65,7 +79,10 @@ public class GestionApp {
         }
     }
 
-    //Menús 
+    /**
+     * Muestra el menú para gestionar la tabla "Alumno". Proporciona opciones
+     * para crear, leer, modificar y borrar registros.
+     */
     private void menuAlumno() {
         while (true) {
             System.out.println("\n--- Menú Alumno ---");
@@ -99,6 +116,10 @@ public class GestionApp {
         }
     }
 
+    /**
+     * Muestra el menú para gestionar la tabla "Empresa". Proporciona opciones
+     * para crear, leer, modificar y borrar registros.
+     */
     private void menuEmpresa() {
         while (true) {
             System.out.println("\n--- Menú Empresa ---");
@@ -132,6 +153,10 @@ public class GestionApp {
         }
     }
 
+    /**
+     * Muestra el menú para gestionar la tabla "Tutor Docente". Proporciona
+     * opciones para crear, leer, modificar y borrar registros.
+     */
     public void menuTutorDocente() {
         int opcion;
         do {
@@ -165,6 +190,10 @@ public class GestionApp {
         } while (opcion != 5);
     }
 
+    /**
+     * Muestra el menú para gestionar la tabla "Tutor Empresa". Proporciona
+     * opciones para crear, leer, modificar y borrar registros.
+     */
     public void menuTutorEmpresa() {
         int opcion;
         do {
@@ -197,7 +226,11 @@ public class GestionApp {
             }
         } while (opcion != 5);
     }
-    
+
+    /**
+     * Muestra el menú para gestionar la tabla "Visita". Proporciona opciones
+     * para crear, leer, modificar y borrar registros.
+     */
     public void menuVisita() {
         int opcion;
         do {
@@ -231,7 +264,11 @@ public class GestionApp {
         } while (opcion != 5);
     }
 
-    // Menú Comentario
+    /**
+     * Menú para gestionar los comentarios. Proporciona opciones para crear,
+     * leer, modificar y borrar comentarios. También permite volver al menú
+     * principal.
+     */
     private void menuComentario() {
         while (true) {
             System.out.println("\n--- Menú Comentario ---");
@@ -245,7 +282,7 @@ public class GestionApp {
             int opcion = leerOpcion(1, 5);
 
             if (opcion == 5) {
-                break;
+                break; // Salir del menú de comentarios
             }
 
             switch (opcion) {
@@ -265,6 +302,10 @@ public class GestionApp {
         }
     }
 
+    /**
+     * Menú para gestionar los programas. Proporciona opciones para crear, leer,
+     * modificar y borrar programas. También permite volver al menú principal.
+     */
     private void menuPrograma() {
         while (true) {
             System.out.println("\n--- Menú Programa ---");
@@ -272,13 +313,13 @@ public class GestionApp {
             System.out.println("2. Leer programas");
             System.out.println("3. Modificar programa");
             System.out.println("4. Borrar programa");
-            System.out.println("3. Volver al menú principal");
+            System.out.println("5. Volver al menú principal");
             System.out.print("Seleccione una opción: ");
 
-            int opcion = leerOpcion(1, 3);
+            int opcion = leerOpcion(1, 5);
 
-            if (opcion == 3) {
-                break;
+            if (opcion == 5) {
+                break; // Salir del menú de programas
             }
 
             switch (opcion) {
@@ -297,7 +338,11 @@ public class GestionApp {
             }
         }
     }
-    
+
+    /**
+     * Menú para gestionar las prácticas. Proporciona opciones para crear, leer,
+     * modificar y borrar prácticas. También permite volver al menú principal.
+     */
     private void menuPractica() {
         int opcion;
         do {
@@ -331,7 +376,11 @@ public class GestionApp {
         } while (opcion != 5);
     }
 
-    //Crear
+    /**
+     * Crea un nuevo registro en la tabla "alumno". Solicita al usuario ingresar
+     * los datos necesarios: nombre, teléfono, correo e ID del programa. Valida
+     * los datos antes de insertarlos en la base de datos.
+     */
     private void crearAlumno() {
         System.out.print("Nombre: ");
         String nombre = sc.nextLine();
@@ -339,9 +388,9 @@ public class GestionApp {
         System.out.println();
         System.out.println("Programas disponibles:");
         System.out.println();
-        
-        leerPrograma();
-        int id_programa = leerIdPrograma("ID del programa: ");  // Se verifica que el id_programa sea válido
+
+        leerPrograma(); // Muestra los programas disponibles
+        int id_programa = leerIdPrograma("ID del programa: "); // Verifica la validez del ID
 
         String telefono = leerEntrada("Teléfono (Solo números): ", "^[0-9 ]+$",
                 "El teléfono solo puede contener números y espacios.");
@@ -352,7 +401,7 @@ public class GestionApp {
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
 
             preparedStatement.setString(1, nombre);
-            preparedStatement.setInt(2, id_programa);  // Insertar el id_programa en lugar de un nombre
+            preparedStatement.setInt(2, id_programa); // Inserta el ID del programa
             preparedStatement.setString(3, telefono);
             preparedStatement.setString(4, correo);
 
@@ -364,6 +413,11 @@ public class GestionApp {
         }
     }
 
+    /**
+     * Crea un nuevo registro en la tabla "empresa". Solicita al usuario
+     * ingresar los datos necesarios: nombre, dirección, teléfono y correo.
+     * Valida los datos antes de insertarlos en la base de datos.
+     */
     private void crearEmpresa() {
         System.out.print("Nombre: ");
         String nombre = sc.nextLine();
@@ -392,6 +446,11 @@ public class GestionApp {
         }
     }
 
+    /**
+     * Crea un nuevo registro en la tabla "tutordocente". Solicita al usuario
+     * ingresar el nombre, teléfono y correo. Valida los datos antes de
+     * insertarlos en la base de datos.
+     */
     private void crearTutorDocente() {
         System.out.print("Nombre: ");
         String nombre = sc.nextLine();
@@ -416,6 +475,11 @@ public class GestionApp {
         }
     }
 
+    /**
+     * Crea un nuevo registro en la tabla "tutorempresa". Solicita al usuario
+     * ingresar el nombre, teléfono y correo. Valida los datos antes de
+     * insertarlos en la base de datos.
+     */
     private void crearTutorEmpresa() {
         System.out.print("Nombre: ");
         String nombre = sc.nextLine();
@@ -439,13 +503,18 @@ public class GestionApp {
             System.err.println("Error al crear tutor de empresa: " + e.getMessage());
         }
     }
-    
+
+    /**
+     * Crea un nuevo registro en la tabla "visita". Solicita al usuario ingresar
+     * la fecha, observaciones y el ID de asignación. Valida los datos antes de
+     * insertarlos en la base de datos.
+     */
     private void crearVisita() {
-        
-        String fecha = leerEntrada("Fecha (dd/MM/yyyy): ", 
+        String fecha = leerEntrada("Fecha (dd/MM/yyyy): ",
                 "\\d{2}/\\d{2}/\\d{4}",
                 "La fecha debe estar en formato dd/MM/yyyy.");
         Date fechaConversa = leerFecha(fecha);
+
         System.out.println("Introduzca observación en caso de haberla: ");
         String observaciones = sc.nextLine();
         int id_asignacion = leerIdAsignacion("Introduzca el ID de la práctica: ");
@@ -465,8 +534,13 @@ public class GestionApp {
         }
     }
 
+    /**
+     * Crea un nuevo registro en la tabla "comentario". Solicita al usuario
+     * ingresar la fecha, detalle y el ID de la empresa. Valida los datos antes
+     * de insertarlos en la base de datos.
+     */
     private void crearComentario() {
-        String fechaIntroducida = leerEntrada("Fecha del comentario (dd/MM/yyyy): ", 
+        String fechaIntroducida = leerEntrada("Fecha del comentario (dd/MM/yyyy): ",
                 "\\d{2}/\\d{2}/\\d{4}",
                 "La fecha debe estar en formato dd/MM/yyyy.");
 
@@ -478,7 +552,7 @@ public class GestionApp {
         System.out.println();
         System.out.println("Empresas disponibles: ");
         System.out.println();
-        
+
         leerEmpresa();
         int id_empresa = leerIdEmpresa("ID de la empresa: ");
 
@@ -490,22 +564,26 @@ public class GestionApp {
             preparedStatement.setInt(3, id_empresa);
 
             int filasAfectadas = preparedStatement.executeUpdate();
-            System.out.println("Tutor de empresa creado. Filas afectadas: " + filasAfectadas);
+            System.out.println("Comentario creado. Filas afectadas: " + filasAfectadas);
 
         } catch (SQLException e) {
-            System.err.println("Error al crear tutor de empresa: " + e.getMessage());
+            System.err.println("Error al crear comentario: " + e.getMessage());
         }
     }
 
+    /**
+     * Crea un nuevo registro en la tabla "programa". Solicita al usuario
+     * ingresar el nombre del programa. Valida los datos antes de insertarlos en
+     * la base de datos.
+     */
     private void crearPrograma() {
         System.out.print("Nombre del programa: ");
         String nombre = sc.nextLine();
 
-        // Aquí puedes agregar más detalles si el programa tiene más atributos.
         String insertQuery = "INSERT INTO programa (nombre_programa) VALUES (?)";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
 
-            preparedStatement.setString(1, nombre);  // Insertar el nombre del programa
+            preparedStatement.setString(1, nombre);
 
             int filasAfectadas = preparedStatement.executeUpdate();
             System.out.println("Programa creado. Filas afectadas: " + filasAfectadas);
@@ -514,48 +592,52 @@ public class GestionApp {
             System.err.println("Error al crear programa: " + e.getMessage());
         }
     }
-    
+
+    /**
+     * Crea un nuevo registro en la tabla "practica". Solicita al usuario
+     * ingresar las fechas, estado y las relaciones con otras tablas mediante
+     * IDs. Valida los datos antes de insertarlos en la base de datos.
+     */
     private void crearPractica() {
-        String fechaInicio = leerEntrada("Fecha inicio (dd/MM/yyyy): ", 
+        String fechaInicio = leerEntrada("Fecha inicio (dd/MM/yyyy): ",
                 "\\d{2}/\\d{2}/\\d{4}",
                 "La fecha debe estar en formato dd/MM/yyyy.");
         Date fechaInicioConversa = leerFecha(fechaInicio);
-        String fechaFin = leerEntrada("Fecha fin (dd/MM/yyyy): ", 
+        String fechaFin = leerEntrada("Fecha fin (dd/MM/yyyy): ",
                 "\\d{2}/\\d{2}/\\d{4}",
                 "La fecha debe estar en formato dd/MM/yyyy.");
         Date fechaFinConversa = leerFecha(fechaFin);
-        
+
         System.out.println("Estado de la práctica: ");
         String estado = sc.nextLine();
-        
+
         System.out.println();
         System.out.println("Alumnos disponibles: ");
         System.out.println();
-        
+
         leerAlumno();
         int id_alumno = leerIdAlumno("ID del alumno: ");
-        
+
         System.out.println();
         System.out.println("Empresas disponibles:");
         System.out.println();
-        
+
         leerEmpresa();
         int id_empresa = leerIdEmpresa("ID de la empresa: ");
-        
+
         System.out.println();
         System.out.println("Tutores docentes disponibles:");
         System.out.println();
-        
+
         leerTutorDocente();
         int id_tutor_docente = leerIdTutorDocente("ID del tutor docente: ");
-        
+
         System.out.println();
         System.out.println("Tutores de empresa disponibles:");
         System.out.println();
-        
+
         leerTutorEmpresa();
         int id_tutor_empresa = leerIdTutorEmpresa("ID del tutor de la empresa: ");
-        
 
         String insertQuery = "INSERT INTO practica (fecha_inicio, fecha_fin, estado, id_alumno, id_empresa, id_tutor_docente, id_tutor_empresa) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
@@ -576,7 +658,10 @@ public class GestionApp {
         }
     }
 
-    //Leer
+    /**
+     * Lee todos los registros de la tabla "alumno". Muestra el ID, nombre,
+     * programa asociado, teléfono y correo de cada alumno en la base de datos.
+     */
     private void leerAlumno() {
         String query = "SELECT * FROM alumno";
 
@@ -596,6 +681,10 @@ public class GestionApp {
         }
     }
 
+    /**
+     * Lee todos los registros de la tabla "empresa". Muestra el ID, nombre,
+     * dirección, teléfono y correo de cada empresa en la base de datos.
+     */
     private void leerEmpresa() {
         String query = "SELECT * FROM empresa";
 
@@ -615,6 +704,10 @@ public class GestionApp {
         }
     }
 
+    /**
+     * Lee todos los registros de la tabla "tutordocente". Muestra el ID,
+     * nombre, teléfono y correo de cada tutor docente en la base de datos.
+     */
     private void leerTutorDocente() {
         String query = "SELECT * FROM tutordocente";
 
@@ -633,6 +726,10 @@ public class GestionApp {
         }
     }
 
+    /**
+     * Lee todos los registros de la tabla "tutorempresa". Muestra el ID,
+     * nombre, teléfono y correo de cada tutor de empresa en la base de datos.
+     */
     private void leerTutorEmpresa() {
         String query = "SELECT * FROM tutorempresa";
 
@@ -650,7 +747,11 @@ public class GestionApp {
             System.err.println("Error al leer los tutores de empresa: " + e.getMessage());
         }
     }
-    
+
+    /**
+     * Lee todos los registros de la tabla "visita". Muestra el ID, fecha,
+     * observaciones y práctica asociada de cada visita en la base de datos.
+     */
     private void leerVisita() {
         String query = "SELECT * FROM visita";
 
@@ -667,9 +768,12 @@ public class GestionApp {
         } catch (SQLException e) {
             System.err.println("Error al leer las visitas: " + e.getMessage());
         }
-
     }
 
+    /**
+     * Lee todos los registros de la tabla "comentario". Muestra el ID, fecha,
+     * detalle e ID de la empresa asociada a cada comentario.
+     */
     private void leerComentario() {
         String query = "SELECT * FROM comentario";
 
@@ -688,6 +792,10 @@ public class GestionApp {
         }
     }
 
+    /**
+     * Lee todos los registros de la tabla "programa". Muestra el ID y nombre de
+     * cada programa en la base de datos.
+     */
     private void leerPrograma() {
         String query = "SELECT * FROM programa";
 
@@ -703,7 +811,12 @@ public class GestionApp {
             System.err.println("Error al leer los programas: " + e.getMessage());
         }
     }
-    
+
+    /**
+     * Lee todos los registros de la tabla "practica". Muestra información
+     * detallada de cada práctica, incluyendo fechas, estado y claves foráneas
+     * asociadas.
+     */
     private void leerPractica() {
         String query = "SELECT * FROM practica";
 
@@ -726,9 +839,14 @@ public class GestionApp {
         }
     }
 
-    //Modificar
+    /**
+     * Actualiza los datos de un alumno en la base de datos. Permite modificar
+     * el nombre, el programa asociado, el teléfono y el correo del alumno.
+     *
+     * @throws SQLException si ocurre un error durante la ejecución de la
+     * consulta SQL.
+     */
     private void modificarAlumno() {
-        
         int id_alumno = leerIdAlumno("ID del alumno a modificar: ");
 
         System.out.print("Nombre: ");
@@ -737,9 +855,9 @@ public class GestionApp {
         System.out.println();
         System.out.println("Programas disponibles:");
         System.out.println();
-        
+
         leerPrograma();
-        int id_programa = leerIdPrograma("Nuevo ID del programa: ");  // Validar ID del programa antes de modificar
+        int id_programa = leerIdPrograma("Nuevo ID del programa: ");
 
         String telefono = leerEntrada("Teléfono (Solo números): ", "^[0-9 ]+$",
                 "El teléfono solo puede contener números y espacios.");
@@ -750,7 +868,7 @@ public class GestionApp {
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
 
             preparedStatement.setString(1, nombre);
-            preparedStatement.setInt(2, id_programa);  // Actualizar con el id_programa
+            preparedStatement.setInt(2, id_programa);
             preparedStatement.setString(3, telefono);
             preparedStatement.setString(4, correo);
             preparedStatement.setInt(5, id_alumno);
@@ -763,6 +881,13 @@ public class GestionApp {
         }
     }
 
+    /**
+     * Actualiza los datos de una empresa en la base de datos. Permite modificar
+     * el nombre, la dirección, el teléfono y el correo de la empresa.
+     *
+     * @throws SQLException si ocurre un error durante la ejecución de la
+     * consulta SQL.
+     */
     private void modificarEmpresa() {
         int id_empresa = leerIdEmpresa("ID de la empresa a modificar: ");
 
@@ -794,6 +919,13 @@ public class GestionApp {
         }
     }
 
+    /**
+     * Actualiza los datos de un tutor docente en la base de datos. Permite
+     * modificar el nombre, el teléfono y el correo del tutor docente.
+     *
+     * @throws SQLException si ocurre un error durante la ejecución de la
+     * consulta SQL.
+     */
     private void modificarTutorDocente() {
         int id_tutor_docente = leerIdTutorDocente("ID del Tutor Docente a modificar: ");
 
@@ -821,6 +953,13 @@ public class GestionApp {
         }
     }
 
+    /**
+     * Actualiza los datos de un tutor de empresa en la base de datos. Permite
+     * modificar el nombre, el teléfono y el correo del tutor de empresa.
+     *
+     * @throws SQLException si ocurre un error durante la ejecución de la
+     * consulta SQL.
+     */
     private void modificarTutorEmpresa() {
         int id_tutor_empresa = leerIdTutorEmpresa("ID del tutor de empresa a modificar: ");
 
@@ -847,25 +986,26 @@ public class GestionApp {
             System.err.println("Error al actualizar el tutor de empresa: " + e.getMessage());
         }
     }
-    
+
+    /**
+     * Actualiza los datos de una visita en la base de datos. Permite modificar
+     * la fecha, las observaciones y la práctica asociada a la visita.
+     *
+     * @throws SQLException si ocurre un error durante la ejecución de la
+     * consulta SQL.
+     */
     private void modificarVisita() {
         int id_visita = leerIdVisita("ID de la visita a modificar: ");
 
-        String fecha = leerEntrada("Fecha (dd/MM/yyyy): ", 
-                "\\d{2}/\\d{2}/\\d{4}",
+        String fecha = leerEntrada("Fecha (dd/MM/yyyy): ", "\\d{2}/\\d{2}/\\d{4}",
                 "La fecha debe estar en formato dd/MM/yyyy.");
-        
         System.out.println("Introduzca observación en caso de haberla:");
         String observaciones = sc.nextLine();
-        
-        System.out.println();
+
         System.out.println("Prácticas disponibles:");
-        System.out.println();
-        
         leerPractica();
         int id_asignacion = leerIdAsignacion("ID de la práctica: ");
-        
-        
+
         Date fechaConversa = leerFecha(fecha);
 
         String updateQuery = "UPDATE visita SET fecha = ?, observaciones = ?, id_asignacion = ? WHERE id_visita = ?";
@@ -884,20 +1024,24 @@ public class GestionApp {
         }
     }
 
+    /**
+     * Actualiza los datos de un comentario en la base de datos. Permite
+     * modificar la fecha, el detalle y la empresa asociada al comentario.
+     *
+     * @throws SQLException si ocurre un error durante la ejecución de la
+     * consulta SQL.
+     */
     private void modificarComentario() {
         int id_comentario = leerIdComentario("ID del comentario a modificar: ");
 
-        String fechaIntroducida = leerEntrada("Fecha del comentario (dd/MM/yyyy): ", 
-                "\\d{2}/\\d{2}/\\d{4}",
+        String fechaIntroducida = leerEntrada("Fecha del comentario (dd/MM/yyyy): ", "\\d{2}/\\d{2}/\\d{4}",
                 "La fecha debe estar en formato dd/MM/yyyy.");
-
         Date fecha = leerFecha(fechaIntroducida);
 
         System.out.print("Detalle: ");
         String detalle = sc.nextLine();
-      
-        System.out.println();
-        System.out.println("Empresas disponibles: ");
+
+        System.out.println("Empresas disponibles:");
         leerEmpresa();
         int id_empresa = leerIdEmpresa("ID de la empresa: ");
 
@@ -916,7 +1060,14 @@ public class GestionApp {
             System.err.println("Error al actualizar el comentario: " + e.getMessage());
         }
     }
-    
+
+    /**
+     * Actualiza los datos de un programa en la base de datos. Permite modificar
+     * el nombre del programa.
+     *
+     * @throws SQLException si ocurre un error durante la ejecución de la
+     * consulta SQL.
+     */
     private void modificarPrograma() {
         int id_programa = leerIdPrograma("ID del programa a modificar: ");
 
@@ -936,48 +1087,42 @@ public class GestionApp {
             System.err.println("Error al actualizar el programa: " + e.getMessage());
         }
     }
-    
+
+    /**
+     * Actualiza los datos de una práctica en la base de datos. Permite
+     * modificar las fechas, el estado, y las claves foráneas asociadas a la
+     * práctica.
+     *
+     * @throws SQLException si ocurre un error durante la ejecución de la
+     * consulta SQL.
+     */
     private void modificarPractica() {
         int id_asignacion = leerIdAsignacion("ID de la práctica a modificar: ");
 
-        String fechaInicio = leerEntrada("Fecha inicio (dd/MM/yyyy): ", 
-                "\\d{2}/\\d{2}/\\d{4}",
+        String fechaInicio = leerEntrada("Fecha inicio (dd/MM/yyyy): ", "\\d{2}/\\d{2}/\\d{4}",
                 "La fecha debe estar en formato dd/MM/yyyy.");
-        String fechaFin = leerEntrada("Fecha fin (dd/MM/yyyy): ", 
-                "\\d{2}/\\d{2}/\\d{4}",
+        String fechaFin = leerEntrada("Fecha fin (dd/MM/yyyy): ", "\\d{2}/\\d{2}/\\d{4}",
                 "La fecha debe estar en formato dd/MM/yyyy.");
-        
+
         System.out.print("Estado de la práctica: ");
         String estado = sc.nextLine();
-        
-        System.out.println();
-        System.out.println("Alumnos disponibles: ");
-        System.out.println();
-        
+
+        System.out.println("Alumnos disponibles:");
         leerAlumno();
         int id_alumno = leerIdAlumno("ID del alumno: ");
-        
-        System.out.println();
+
         System.out.println("Empresas disponibles:");
-        System.out.println();
-        
         leerEmpresa();
         int id_empresa = leerIdEmpresa("ID de la empresa: ");
-        
-        System.out.println();
+
         System.out.println("Tutores docentes disponibles:");
-        System.out.println();
-        
         leerTutorDocente();
         int id_tutor_docente = leerIdTutorDocente("ID del tutor docente: ");
-        
-        System.out.println();
+
         System.out.println("Tutores de empresa disponibles:");
-        System.out.println();
-        
         leerTutorEmpresa();
         int id_tutor_empresa = leerIdTutorEmpresa("ID del tutor de la empresa: ");
-        
+
         Date fechaInicioConversa = leerFecha(fechaInicio);
         Date fechaFinConversa = leerFecha(fechaFin);
 
@@ -1001,7 +1146,17 @@ public class GestionApp {
         }
     }
 
-    //Borrar
+    /**
+     * Elimina un alumno de la base de datos.
+     * <p>
+     * Este método solicita al usuario el ID del alumno a eliminar y lo utiliza
+     * para ejecutar una consulta DELETE en la base de datos, eliminando el
+     * registro correspondiente.
+     * </p>
+     *
+     * @throws SQLException Si ocurre un error al intentar eliminar el alumno de
+     * la base de datos.
+     */
     private void borrarAlumno() {
         int id_alumno = leerIdAlumno("ID del alumno a borrar: ");
         String deleteQuery = "DELETE FROM alumno WHERE id_alumno = ?";
@@ -1016,6 +1171,17 @@ public class GestionApp {
         }
     }
 
+    /**
+     * Elimina una empresa de la base de datos.
+     * <p>
+     * Este método solicita al usuario el ID de la empresa a eliminar y lo
+     * utiliza para ejecutar una consulta DELETE en la base de datos, eliminando
+     * el registro correspondiente.
+     * </p>
+     *
+     * @throws SQLException Si ocurre un error al intentar eliminar la empresa
+     * de la base de datos.
+     */
     private void borrarEmpresa() {
         int id_empresa = leerIdEmpresa("ID de la empresa a borrar: ");
         String deleteQuery = "DELETE FROM empresa WHERE id_empresa = ?";
@@ -1030,6 +1196,17 @@ public class GestionApp {
         }
     }
 
+    /**
+     * Elimina un tutor docente de la base de datos.
+     * <p>
+     * Este método solicita al usuario el ID del tutor docente a eliminar y lo
+     * utiliza para ejecutar una consulta DELETE en la base de datos, eliminando
+     * el registro correspondiente.
+     * </p>
+     *
+     * @throws SQLException Si ocurre un error al intentar eliminar el tutor
+     * docente de la base de datos.
+     */
     private void borrarTutorDocente() {
         int id_tutor_docente = leerIdTutorDocente("ID del Tutor Docente a borrar: ");
         String deleteQuery = "DELETE FROM tutordocente WHERE id_tutor_docente = ?";
@@ -1044,6 +1221,17 @@ public class GestionApp {
         }
     }
 
+    /**
+     * Elimina un tutor de empresa de la base de datos.
+     * <p>
+     * Este método solicita al usuario el ID del tutor de empresa a eliminar y
+     * lo utiliza para ejecutar una consulta DELETE en la base de datos,
+     * eliminando el registro correspondiente.
+     * </p>
+     *
+     * @throws SQLException Si ocurre un error al intentar eliminar el tutor de
+     * empresa de la base de datos.
+     */
     private void borrarTutorEmpresa() {
         int id_tutor_empresa = leerIdTutorEmpresa("ID del tutor de empresa a borrar: ");
         String deleteQuery = "DELETE FROM tutorempresa WHERE id_tutor_empresa = ?";
@@ -1057,7 +1245,18 @@ public class GestionApp {
             System.err.println("Error al eliminar el tutor de empresa: " + e.getMessage());
         }
     }
-    
+
+    /**
+     * Elimina una visita de la base de datos.
+     * <p>
+     * Este método solicita al usuario el ID de la visita a eliminar y lo
+     * utiliza para ejecutar una consulta DELETE en la base de datos, eliminando
+     * el registro correspondiente.
+     * </p>
+     *
+     * @throws SQLException Si ocurre un error al intentar eliminar la visita de
+     * la base de datos.
+     */
     private void borrarVisita() {
         int id_visita = leerIdVisita("ID de la visita a borrar: ");
         String deleteQuery = "DELETE FROM visita WHERE id_visita = ?";
@@ -1072,6 +1271,17 @@ public class GestionApp {
         }
     }
 
+    /**
+     * Elimina un comentario de la base de datos.
+     * <p>
+     * Este método solicita al usuario el ID del comentario a eliminar y lo
+     * utiliza para ejecutar una consulta DELETE en la base de datos, eliminando
+     * el registro correspondiente.
+     * </p>
+     *
+     * @throws SQLException Si ocurre un error al intentar eliminar el
+     * comentario de la base de datos.
+     */
     private void borrarComentario() {
         int id_comentario = leerIdComentario("ID del comentario a borrar: ");
         String deleteQuery = "DELETE FROM comentario WHERE id_comentario = ?";
@@ -1085,7 +1295,18 @@ public class GestionApp {
             System.err.println("Error al eliminar el comentario: " + e.getMessage());
         }
     }
-    
+
+    /**
+     * Elimina un programa de la base de datos.
+     * <p>
+     * Este método solicita al usuario el ID del programa a eliminar y lo
+     * utiliza para ejecutar una consulta DELETE en la base de datos, eliminando
+     * el registro correspondiente.
+     * </p>
+     *
+     * @throws SQLException Si ocurre un error al intentar eliminar el programa
+     * de la base de datos.
+     */
     private void borrarPrograma() {
         int id_programa = leerIdPrograma("ID del programa a borrar: ");
         String deleteQuery = "DELETE FROM programa WHERE id_programa = ?";
@@ -1099,7 +1320,18 @@ public class GestionApp {
             System.err.println("Error al eliminar el programa: " + e.getMessage());
         }
     }
-    
+
+    /**
+     * Elimina una práctica de la base de datos.
+     * <p>
+     * Este método solicita al usuario el ID de la práctica a eliminar y lo
+     * utiliza para ejecutar una consulta DELETE en la base de datos, eliminando
+     * el registro correspondiente.
+     * </p>
+     *
+     * @throws SQLException Si ocurre un error al intentar eliminar la práctica
+     * de la base de datos.
+     */
     private void borrarPractica() {
         int id_asignacion = leerIdAsignacion("ID de la práctica a borrar: ");
         String deleteQuery = "DELETE FROM practica WHERE id_asignacion = ?";
@@ -1114,7 +1346,19 @@ public class GestionApp {
         }
     }
 
-    //Leer opción usuario
+    /**
+     * Lee una opción del usuario dentro de un rango específico.
+     * <p>
+     * Este método solicita al usuario que ingrese una opción, y verifica que la
+     * opción se encuentre dentro del rango proporcionado (mínimo y máximo). Si
+     * la opción no es válida, solicitará al usuario que ingrese nuevamente una
+     * opción válida.
+     * </p>
+     *
+     * @param min El valor mínimo válido para la opción.
+     * @param max El valor máximo válido para la opción.
+     * @return La opción seleccionada por el usuario.
+     */
     private int leerOpcion(int min, int max) {
         while (true) {
             try {
@@ -1130,29 +1374,52 @@ public class GestionApp {
             }
         }
     }
-    
+
+    /**
+     * Lee una fecha proporcionada por el usuario, validando que esté en formato
+     * dd/MM/yyyy.
+     * <p>
+     * Este método solicita al usuario que ingrese una fecha en formato
+     * dd/MM/yyyy, valida que la fecha sea correcta, y convierte la entrada en
+     * un objeto {@link java.sql.Date}.
+     * </p>
+     *
+     * @param fechaInput La fecha proporcionada por el usuario como cadena de
+     * texto.
+     * @return La fecha convertida a {@link java.sql.Date}.
+     */
     private Date leerFecha(String fechaInput) {
-    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-    dateFormat.setLenient(false); // Validación estricta de la fecha
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        dateFormat.setLenient(false); // Validación estricta de la fecha
 
-    while (true) {
-        try {
-            // Intentar analizar la fecha con formato estricto
-            java.util.Date fecha = dateFormat.parse(fechaInput);
-            return new java.sql.Date(fecha.getTime()); // Convertir a java.sql.Date si es necesario
-        } catch (Exception e) {
-            System.out.println("Fecha introducida errónea, asegurese de haber introducido el formato dd/MM/yyyy y que los datos introducidos sean válidos.");
+        while (true) {
+            try {
+                // Intentar analizar la fecha con formato estricto
+                java.util.Date fecha = dateFormat.parse(fechaInput);
+                return new java.sql.Date(fecha.getTime()); // Convertir a java.sql.Date si es necesario
+            } catch (Exception e) {
+                System.out.println("Fecha introducida errónea, asegurese de haber introducido el formato dd/MM/yyyy y que los datos introducidos sean válidos.");
 
-            // Solicitar una nueva entrada
-            Scanner scanner = new Scanner(System.in);
-            System.out.print("Introduzca la fecha: ");
-            fechaInput = scanner.nextLine();
+                // Solicitar una nueva entrada
+                Scanner scanner = new Scanner(System.in);
+                System.out.print("Introduzca la fecha: ");
+                fechaInput = scanner.nextLine();
+            }
         }
     }
-}
 
-
-    //Leer ID
+    /**
+     * Lee el ID de un alumno proporcionado por el usuario, verificando que sea
+     * válido.
+     * <p>
+     * Este método solicita al usuario el ID de un alumno y verifica que el ID
+     * ingresado sea numérico y que exista en la base de datos. Si el ID no es
+     * válido, se solicitará un nuevo ingreso.
+     * </p>
+     *
+     * @param mensaje El mensaje que se muestra al usuario para ingresar el ID.
+     * @return El ID del alumno ingresado por el usuario.
+     */
     private int leerIdAlumno(String mensaje) {
         while (true) {
             System.out.print(mensaje);
@@ -1170,6 +1437,18 @@ public class GestionApp {
         }
     }
 
+    /**
+     * Lee el ID de una empresa proporcionado por el usuario, verificando que
+     * sea válido.
+     * <p>
+     * Este método solicita al usuario el ID de una empresa y verifica que el ID
+     * ingresado sea numérico y que exista en la base de datos. Si el ID no es
+     * válido, se solicitará un nuevo ingreso.
+     * </p>
+     *
+     * @param mensaje El mensaje que se muestra al usuario para ingresar el ID.
+     * @return El ID de la empresa ingresado por el usuario.
+     */
     private int leerIdEmpresa(String mensaje) {
         while (true) {
             System.out.print(mensaje);
@@ -1187,6 +1466,18 @@ public class GestionApp {
         }
     }
 
+    /**
+     * Lee el ID de un tutor docente proporcionado por el usuario, verificando
+     * que sea válido.
+     * <p>
+     * Este método solicita al usuario el ID de un tutor docente y verifica que
+     * el ID ingresado sea numérico y que exista en la base de datos. Si el ID
+     * no es válido, se solicitará un nuevo ingreso.
+     * </p>
+     *
+     * @param mensaje El mensaje que se muestra al usuario para ingresar el ID.
+     * @return El ID del tutor docente ingresado por el usuario.
+     */
     private int leerIdTutorDocente(String mensaje) {
         while (true) {
             System.out.print(mensaje);
@@ -1204,6 +1495,18 @@ public class GestionApp {
         }
     }
 
+    /**
+     * Lee el ID de un tutor de empresa proporcionado por el usuario,
+     * verificando que sea válido.
+     * <p>
+     * Este método solicita al usuario el ID de un tutor de empresa y verifica
+     * que el ID ingresado sea numérico y que exista en la base de datos. Si el
+     * ID no es válido, se solicitará un nuevo ingreso.
+     * </p>
+     *
+     * @param mensaje El mensaje que se muestra al usuario para ingresar el ID.
+     * @return El ID del tutor de empresa ingresado por el usuario.
+     */
     private int leerIdTutorEmpresa(String mensaje) {
         while (true) {
             System.out.print(mensaje);
@@ -1220,7 +1523,19 @@ public class GestionApp {
             }
         }
     }
-    
+
+    /**
+     * Lee el ID de una visita proporcionado por el usuario, verificando que sea
+     * válido.
+     * <p>
+     * Este método solicita al usuario el ID de una visita y verifica que el ID
+     * ingresado sea numérico y que exista en la base de datos. Si el ID no es
+     * válido, se solicitará un nuevo ingreso.
+     * </p>
+     *
+     * @param mensaje El mensaje que se muestra al usuario para ingresar el ID.
+     * @return El ID de la visita ingresado por el usuario.
+     */
     private int leerIdVisita(String mensaje) {
         while (true) {
             System.out.print(mensaje);
@@ -1238,6 +1553,18 @@ public class GestionApp {
         }
     }
 
+    /**
+     * Lee el ID de un comentario proporcionado por el usuario, verificando que
+     * sea válido.
+     * <p>
+     * Este método solicita al usuario el ID de un comentario y verifica que el
+     * ID ingresado sea numérico y que exista en la base de datos. Si el ID no
+     * es válido, se solicitará un nuevo ingreso.
+     * </p>
+     *
+     * @param mensaje El mensaje que se muestra al usuario para ingresar el ID.
+     * @return El ID del comentario ingresado por el usuario.
+     */
     private int leerIdComentario(String mensaje) {
         while (true) {
             System.out.print(mensaje);
@@ -1254,7 +1581,19 @@ public class GestionApp {
             }
         }
     }
-    
+
+    /**
+     * Lee el ID de una asignación de práctica proporcionado por el usuario,
+     * verificando que sea válido.
+     * <p>
+     * Este método solicita al usuario el ID de una asignación de práctica y
+     * verifica que el ID ingresado sea numérico y que exista en la base de
+     * datos. Si el ID no es válido, se solicitará un nuevo ingreso.
+     * </p>
+     *
+     * @param mensaje El mensaje que se muestra al usuario para ingresar el ID.
+     * @return El ID de la asignación de práctica ingresado por el usuario.
+     */
     private int leerIdAsignacion(String mensaje) {
         while (true) {
             System.out.print(mensaje);
@@ -1272,7 +1611,18 @@ public class GestionApp {
         }
     }
 
-    //Leer datos
+    /**
+     * Lee el ID de un programa proporcionado por el usuario, verificando que
+     * sea válido.
+     * <p>
+     * Este método solicita al usuario el ID de un programa y verifica que el ID
+     * ingresado sea numérico y que exista en la base de datos. Si el ID no es
+     * válido, se solicitará un nuevo ingreso.
+     * </p>
+     *
+     * @param mensaje El mensaje que se muestra al usuario para ingresar el ID.
+     * @return El ID del programa ingresado por el usuario.
+     */
     private int leerIdPrograma(String mensaje) {
         while (true) {
             System.out.print(mensaje);
@@ -1290,7 +1640,23 @@ public class GestionApp {
         }
     }
 
-    //Leer datos
+    /**
+     * Lee una entrada del usuario y valida que coincida con un patrón regular
+     * específico.
+     * <p>
+     * Este método solicita al usuario que ingrese un valor y lo valida
+     * utilizando una expresión regular proporcionada. Si la entrada no coincide
+     * con el patrón, se mostrará un mensaje de error y se solicitará una nueva
+     * entrada.
+     * </p>
+     *
+     * @param mensaje El mensaje que se mostrará al usuario para pedir la
+     * entrada.
+     * @param regex La expresión regular que se usará para validar la entrada.
+     * @param errorMensaje El mensaje de error que se mostrará si la entrada no
+     * es válida.
+     * @return La entrada proporcionada por el usuario si es válida.
+     */
     private String leerEntrada(String mensaje, String regex, String errorMensaje) {
         while (true) {
             System.out.print(mensaje);
@@ -1302,7 +1668,16 @@ public class GestionApp {
         }
     }
 
-    //Verificar ID
+    /**
+     * Verifica si un alumno con el ID dado existe en la base de datos.
+     * <p>
+     * Este método realiza una consulta en la base de datos para verificar si
+     * existe un registro de alumno con el ID proporcionado.
+     * </p>
+     *
+     * @param id_alumno El ID del alumno a verificar.
+     * @return true si el alumno con el ID existe, false en caso contrario.
+     */
     private boolean existeAlumno(int id_alumno) {
         String query = "SELECT COUNT(*) FROM alumno WHERE id_alumno = ?";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -1318,6 +1693,16 @@ public class GestionApp {
         }
     }
 
+    /**
+     * Verifica si una empresa con el ID dado existe en la base de datos.
+     * <p>
+     * Este método realiza una consulta en la base de datos para verificar si
+     * existe un registro de empresa con el ID proporcionado.
+     * </p>
+     *
+     * @param id_empresa El ID de la empresa a verificar.
+     * @return true si la empresa con el ID existe, false en caso contrario.
+     */
     private boolean existeEmpresa(int id_empresa) {
         String query = "SELECT COUNT(*) FROM empresa WHERE id_empresa = ?";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -1333,6 +1718,17 @@ public class GestionApp {
         }
     }
 
+    /**
+     * Verifica si un tutor docente con el ID dado existe en la base de datos.
+     * <p>
+     * Este método realiza una consulta en la base de datos para verificar si
+     * existe un registro de tutor docente con el ID proporcionado.
+     * </p>
+     *
+     * @param id_tutor_docente El ID del tutor docente a verificar.
+     * @return true si el tutor docente con el ID existe, false en caso
+     * contrario.
+     */
     private boolean existeTutorDocente(int id_tutor_docente) {
         String query = "SELECT COUNT(*) FROM tutordocente WHERE id_tutor_docente = ?";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -1348,6 +1744,18 @@ public class GestionApp {
         }
     }
 
+    /**
+     * Verifica si un tutor de empresa con el ID dado existe en la base de
+     * datos.
+     * <p>
+     * Este método realiza una consulta en la base de datos para verificar si
+     * existe un registro de tutor de empresa con el ID proporcionado.
+     * </p>
+     *
+     * @param id_tutor_empresa El ID del tutor de empresa a verificar.
+     * @return true si el tutor de empresa con el ID existe, false en caso
+     * contrario.
+     */
     private boolean existeTutorEmpresa(int id_tutor_empresa) {
         String query = "SELECT COUNT(*) FROM tutorempresa WHERE id_tutor_empresa = ?";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -1362,7 +1770,17 @@ public class GestionApp {
             return false;
         }
     }
-    
+
+    /**
+     * Verifica si una visita con el ID dado existe en la base de datos.
+     * <p>
+     * Este método realiza una consulta en la base de datos para verificar si
+     * existe un registro de visita con el ID proporcionado.
+     * </p>
+     *
+     * @param id_visita El ID de la visita a verificar.
+     * @return true si la visita con el ID existe, false en caso contrario.
+     */
     private boolean existeVisita(int id_visita) {
         String query = "SELECT COUNT(*) FROM visita WHERE id_visita = ?";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -1378,6 +1796,16 @@ public class GestionApp {
         }
     }
 
+    /**
+     * Verifica si un comentario con el ID dado existe en la base de datos.
+     * <p>
+     * Este método realiza una consulta en la base de datos para verificar si
+     * existe un registro de comentario con el ID proporcionado.
+     * </p>
+     *
+     * @param id_comentario El ID del comentario a verificar.
+     * @return true si el comentario con el ID existe, false en caso contrario.
+     */
     private boolean existeComentario(int id_comentario) {
         String query = "SELECT COUNT(*) FROM comentario WHERE id_comentario = ?";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -1392,7 +1820,17 @@ public class GestionApp {
             return false;
         }
     }
-    
+
+    /**
+     * Verifica si una práctica con el ID dado existe en la base de datos.
+     * <p>
+     * Este método realiza una consulta en la base de datos para verificar si
+     * existe un registro de práctica con el ID proporcionado.
+     * </p>
+     *
+     * @param id_asignacion El ID de la asignación de práctica a verificar.
+     * @return true si la práctica con el ID existe, false en caso contrario.
+     */
     private boolean existePractica(int id_asignacion) {
         String query = "SELECT COUNT(*) FROM practica WHERE id_asignacion = ?";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -1400,13 +1838,23 @@ public class GestionApp {
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
             return resultSet.getInt(1) > 0;
-            
+
         } catch (SQLException e) {
             System.err.println("Error al verificar el ID de la práctica: " + e.getMessage());
             return false;
         }
     }
 
+    /**
+     * Verifica si un programa con el ID dado existe en la base de datos.
+     * <p>
+     * Este método realiza una consulta en la base de datos para verificar si
+     * existe un registro de programa con el ID proporcionado.
+     * </p>
+     *
+     * @param id_programa El ID del programa a verificar.
+     * @return true si el programa con el ID existe, false en caso contrario.
+     */
     private boolean existePrograma(int id_programa) {
         String query = "SELECT COUNT(*) FROM programa WHERE id_programa = ?";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
