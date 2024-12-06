@@ -18,7 +18,6 @@ public class Main {
         // Crear una instancia de la clase GestionApp
         GestionApp gestionApp = new GestionApp();
         
-        // Iniciar la aplicación
-        gestionApp.iniciarAplicacion();
+        
     }
 }
