@@ -1,5 +1,7 @@
 package aed.gestion_fct;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
 /**
@@ -75,4 +77,46 @@ public class GestionApp {
             }
         }
     }
+    
+    /**
+     * Lee una fecha proporcionada por el usuario, validando que esté en formato
+     * dd/MM/yyyy.
+     * <p>
+     * Este método solicita al usuario que ingrese una fecha en formato
+     * dd/MM/yyyy, valida que la fecha sea correcta, y convierte la entrada en
+     * un objeto {@link java.sql.Date}.
+     * </p>
+     *
+     * @param fechaInput La fecha proporcionada por el usuario como cadena de
+     * texto.
+     * @return La fecha convertida a {@link java.sql.Date}.
+     */
+    public Date leerFecha(String fechaInput) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        dateFormat.setLenient(false); // Validación estricta de la fecha
+
+        while (true) {
+            try {
+                // Intentar analizar la fecha con formato estricto
+                java.util.Date fecha = dateFormat.parse(fechaInput);
+                return new java.sql.Date(fecha.getTime()); // Convertir a java.sql.Date si es necesario
+            } catch (Exception e) {
+                System.out.println("Fecha introducida errónea, asegurese de haber introducido el formato dd/MM/yyyy y que los datos introducidos sean válidos.");
+
+                // Solicitar una nueva entrada
+                Scanner scanner = new Scanner(System.in);
+                System.out.print("Introduzca la fecha: ");
+                fechaInput = scanner.nextLine();
+            }
+        }
+    }
+    
+    /*
+    Guardo esto por si acaso
+    
+    String telefono = leerEntrada("Teléfono (Solo números): ", "^[0-9 ]+$",
+                "El teléfono solo puede contener números y espacios.");
+        String correo = leerEntrada("Correo (Debe contener @): ", ".*@.*",
+                "El correo debe contener un '@'.");
+    */
 }

@@ -1,11 +1,15 @@
 package aed.gestion_fct.model;
 
 import aed.gestion_fct.ConnectionPool;
+import aed.gestion_fct.data.Empresa;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Scanner;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class EmpresaCRUD {
     
@@ -14,25 +18,16 @@ public class EmpresaCRUD {
      * ingresar los datos necesarios: nombre, dirección, teléfono y correo.
      * Valida los datos antes de insertarlos en la base de datos.
      */
-    public void crearEmpresa() {
-        System.out.print("Nombre: ");
-        String nombre = sc.nextLine();
-
-        System.out.print("Dirección: ");
-        String direccion = sc.nextLine();
-
-        String telefono = leerEntrada("Teléfono (Solo números): ", "^[0-9 ]+$",
-                "El teléfono solo puede contener números y espacios.");
-        String correo = leerEntrada("Correo (Debe contener @): ", ".*@.*",
-                "El correo debe contener un '@'.");
-
-        String insertQuery = "INSERT INTO empresa (nombre, direccion, telefono, correo) VALUES (?, ?, ?, ?)";
+    public static void crearEmpresa(String nombre, String correo, String direccion, String telefono, int plazas) {
+        
+        String insertQuery = "INSERT INTO empresa (nombre, correo, direccion, telefono, plazas) VALUES (?, ?, ?, ?, ?)";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
 
             preparedStatement.setString(1, nombre);
-            preparedStatement.setString(2, direccion);
-            preparedStatement.setString(3, telefono);
-            preparedStatement.setString(4, correo);
+            preparedStatement.setString(2, correo);
+            preparedStatement.setString(3, direccion);
+            preparedStatement.setString(4, telefono);
+            preparedStatement.setInt(5, plazas);
 
             int filasAfectadas = preparedStatement.executeUpdate();
             System.out.println("Empresa creada. Filas afectadas: " + filasAfectadas);
@@ -46,23 +41,24 @@ public class EmpresaCRUD {
      * Lee todos los registros de la tabla "empresa". Muestra el ID, nombre,
      * dirección, teléfono y correo de cada empresa en la base de datos.
      */
-    public void leerEmpresa() {
+    public static ObservableList leerEmpresa() {
         String query = "SELECT * FROM empresa";
+        ObservableList<Empresa> listaEmpresas = FXCollections.observableArrayList();
 
         try (Connection connection = ConnectionPool.getConnection(); Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(query)) {
 
             while (resultSet.next()) {
-                System.out.println("ID: " + resultSet.getInt("id_empresa"));
-                System.out.println("Nombre: " + resultSet.getString("nombre"));
-                System.out.println("Dirección: " + resultSet.getString("direccion"));
-                System.out.println("Teléfono: " + resultSet.getString("telefono"));
-                System.out.println("Correo: " + resultSet.getString("correo"));
-                System.out.println("-----------------------------------");
+                Empresa empresa = new Empresa(resultSet.getInt("id_empresa"), resultSet.getString("nombre"), resultSet.getString("correo"),
+                    resultSet.getString("direccion"), resultSet.getString("telefono"), resultSet.getInt("plazas"));
+                
+                listaEmpresas.add(empresa);
             }
 
         } catch (SQLException e) {
             System.err.println("Error al leer las empresas: " + e.getMessage());
         }
+        
+        return listaEmpresas;
     }
     
     /**
@@ -72,28 +68,17 @@ public class EmpresaCRUD {
      * @throws SQLException si ocurre un error durante la ejecución de la
      * consulta SQL.
      */
-    public void modificarEmpresa() {
-        int id_empresa = leerIdEmpresa("ID de la empresa a modificar: ");
+    public static void modificarEmpresa(int id_empresa, String nombre, String correo, String direccion, String telefono, int plazas) {
 
-        System.out.print("Nombre: ");
-        String nombre = sc.nextLine();
-
-        System.out.print("Dirección: ");
-        String direccion = sc.nextLine();
-
-        String telefono = leerEntrada("Teléfono (Solo números): ", "^[0-9 ]+$",
-                "El teléfono solo puede contener números y espacios.");
-        String correo = leerEntrada("Correo (Debe contener @): ", ".*@.*",
-                "El correo debe contener un '@'.");
-
-        String updateQuery = "UPDATE empresa SET nombre = ?, direccion = ?, telefono = ?, correo = ? WHERE id_empresa = ?";
+        String updateQuery = "UPDATE empresa SET nombre = ?, correo = ?, direccion = ?, telefono = ?, plazas = ? WHERE id = ?";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
 
             preparedStatement.setString(1, nombre);
-            preparedStatement.setString(2, direccion);
-            preparedStatement.setString(3, telefono);
-            preparedStatement.setString(4, correo);
-            preparedStatement.setInt(5, id_empresa);
+            preparedStatement.setString(2, correo);
+            preparedStatement.setString(3, direccion);
+            preparedStatement.setString(4, telefono);
+            preparedStatement.setInt(5, plazas);
+            preparedStatement.setInt(6, id_empresa);
 
             int filasAfectadas = preparedStatement.executeUpdate();
             System.out.println("Empresa actualizada. Filas afectadas: " + filasAfectadas);
@@ -114,12 +99,11 @@ public class EmpresaCRUD {
      * @throws SQLException Si ocurre un error al intentar eliminar la empresa
      * de la base de datos.
      */
-    public void borrarEmpresa() {
-        int id_empresa = leerIdEmpresa("ID de la empresa a borrar: ");
-        String deleteQuery = "DELETE FROM empresa WHERE id_empresa = ?";
+    public static void borrarEmpresa(int id) {
+        String deleteQuery = "DELETE FROM empresa WHERE id = ?";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
 
-            preparedStatement.setInt(1, id_empresa);
+            preparedStatement.setInt(1, id);
             int filasAfectadas = preparedStatement.executeUpdate();
             System.out.println("Empresa eliminada. Filas afectadas: " + filasAfectadas);
 
@@ -141,6 +125,9 @@ public class EmpresaCRUD {
      * @return El ID de la empresa ingresado por el usuario.
      */
     public int leerIdEmpresa(String mensaje) {
+        
+        Scanner sc = new Scanner(System.in);
+        
         while (true) {
             System.out.print(mensaje);
             String entrada = sc.nextLine();  // Leer como String para validar

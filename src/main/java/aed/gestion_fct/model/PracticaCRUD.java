@@ -1,7 +1,7 @@
 package aed.gestion_fct.model;
 
 import aed.gestion_fct.ConnectionPool;
-import aed.gestion_fct.Practica;
+import aed.gestion_fct.data.Practica;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -46,9 +46,9 @@ public class PracticaCRUD {
         ObservableList<Practica> listaPracticas = FXCollections.observableArrayList();
 
         try (Connection connection = ConnectionPool.getConnection(); Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(query)) {
-
+            
             while (resultSet.next()) {
-                Practica practica = new Practica(resultSet.getInt("id"),resultSet.getDate("fecha_inicio"),
+                Practica practica = new Practica(resultSet.getInt("id"), resultSet.getDate("fecha_inicio"),
                           resultSet.getDate("fecha_fin"), resultSet.getString("estado"), resultSet.getInt("id_alumno"));
                 
                 listaPracticas.add(practica);
@@ -72,7 +72,7 @@ public class PracticaCRUD {
      */
     public static void modificarPractica(int id, Date fecha_inicio, Date fecha_fin, String estado, int id_alumno) {
 
-        String updateQuery = "UPDATE practica SET id = ?, fecha_inicio = ?, fecha_fin = ?, estado = ? WHERE id_alumno = ?";
+        String updateQuery = "UPDATE practica SET fecha_inicio = ?, fecha_fin = ?, estado = ?, id_alumno = ? WHERE id = ?";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
 
             preparedStatement.setInt(1, id);

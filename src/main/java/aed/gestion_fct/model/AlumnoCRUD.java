@@ -1,6 +1,6 @@
 package aed.gestion_fct.model;
 
-import aed.gestion_fct.Alumno;
+import aed.gestion_fct.data.Alumno;
 import aed.gestion_fct.ConnectionPool;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -77,12 +77,12 @@ public class AlumnoCRUD {
      * @throws SQLException si ocurre un error durante la ejecución de la
      * consulta SQL.
      */
-    public static void modificarAlumno(int id_alumno, String nombre, String apellidos, String telefono,
+    public static void modificarAlumno(int id, String nombre, String apellidos, String telefono,
                                 String correo, int id_practica, int id_programa,
                             int id_tutordocente, int id_tutorempresa, int id_empresa) {
 
         String updateQuery = "UPDATE alumno SET nombre = ?, apellidos = ?, telefono = ?, correo = ?,"
-                + "id_practica, id_programa, id_tutordocente, id_tutorempresa, id_empresa WHERE id_alumno = ?";
+                + "id_practica, id_programa, id_tutordocente, id_tutorempresa, id_empresa WHERE id = ?";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
 
             preparedStatement.setString(1, nombre);
@@ -94,7 +94,7 @@ public class AlumnoCRUD {
             preparedStatement.setInt(7, id_tutordocente);
             preparedStatement.setInt(8, id_tutorempresa);
             preparedStatement.setInt(9, id_empresa);
-            preparedStatement.setInt(10, id_alumno);
+            preparedStatement.setInt(10, id);
 
             int filasAfectadas = preparedStatement.executeUpdate();
             System.out.println("Alumno actualizado. Filas afectadas: " + filasAfectadas);
@@ -115,11 +115,11 @@ public class AlumnoCRUD {
      * @throws SQLException Si ocurre un error al intentar eliminar el alumno de
      * la base de datos.
      */
-    public static void borrarAlumno(int id_alumno) {
-        String deleteQuery = "DELETE FROM alumno WHERE id_alumno = ?";
+    public static void borrarAlumno(int id) {
+        String deleteQuery = "DELETE FROM alumno WHERE id = ?";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
 
-            preparedStatement.setInt(1, id_alumno);
+            preparedStatement.setInt(1, id);
             int filasAfectadas = preparedStatement.executeUpdate();
             System.out.println("Alumno eliminado. Filas afectadas: " + filasAfectadas);
 

@@ -1,4 +1,4 @@
-package aed.gestion_fct;
+package aed.gestion_fct.data;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;

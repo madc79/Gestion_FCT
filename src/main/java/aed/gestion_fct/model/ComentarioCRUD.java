@@ -1,5 +1,6 @@
 package aed.gestion_fct.model;
 
+import aed.gestion_fct.data.Comentario;
 import aed.gestion_fct.ConnectionPool;
 import java.sql.Connection;
 import java.sql.Date;
@@ -7,6 +8,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Scanner;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class ComentarioCRUD {
     
@@ -15,29 +19,15 @@ public class ComentarioCRUD {
      * ingresar la fecha, detalle y el ID de la empresa. Valida los datos antes
      * de insertarlos en la base de datos.
      */
-    public void crearComentario() {
-        String fechaIntroducida = leerEntrada("Fecha del comentario (dd/MM/yyyy): ",
-                "\\d{2}/\\d{2}/\\d{4}",
-                "La fecha debe estar en formato dd/MM/yyyy.");
+    public static void crearComentario(Date fecha, String detalle, int id_tutorempresa, int id_alumno) {
 
-        Date fecha = leerFecha(fechaIntroducida);
-
-        System.out.print("Detalle: ");
-        String detalle = sc.nextLine();
-
-        System.out.println();
-        System.out.println("Empresas disponibles: ");
-        System.out.println();
-
-        leerEmpresa();
-        int id_empresa = leerIdEmpresa("ID de la empresa: ");
-
-        String insertQuery = "INSERT INTO comentario (fecha, detalle, id_empresa) VALUES (?, ?, ?)";
+        String insertQuery = "INSERT INTO comentario (fecha, detalle, id_tutorempresa, id_alumno) VALUES (?, ?, ?, ?)";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
 
             preparedStatement.setDate(1, fecha);
             preparedStatement.setString(2, detalle);
-            preparedStatement.setInt(3, id_empresa);
+            preparedStatement.setInt(3, id_tutorempresa);
+            preparedStatement.setInt(4, id_alumno);
 
             int filasAfectadas = preparedStatement.executeUpdate();
             System.out.println("Comentario creado. Filas afectadas: " + filasAfectadas);
@@ -51,22 +41,24 @@ public class ComentarioCRUD {
      * Lee todos los registros de la tabla "comentario". Muestra el ID, fecha,
      * detalle e ID de la empresa asociada a cada comentario.
      */
-    public void leerComentario() {
+    public static ObservableList leerComentario() {
         String query = "SELECT * FROM comentario";
+        ObservableList<Comentario> listaComentarios = FXCollections.observableArrayList();
 
         try (Connection connection = ConnectionPool.getConnection(); Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(query)) {
 
             while (resultSet.next()) {
-                System.out.println("ID Comentario: " + resultSet.getInt("id_comentario"));
-                System.out.println("Fecha: " + resultSet.getDate("fecha"));
-                System.out.println("Detalle: " + resultSet.getString("detalle"));
-                System.out.println("ID Empresa: " + resultSet.getInt("id_empresa"));
-                System.out.println("-----------------------------------");
+                Comentario comentario = new Comentario(resultSet.getInt("id"), resultSet.getDate("fecha"),
+                    resultSet.getString("detalle"), resultSet.getInt("id_tutorempresa"), resultSet.getInt("id_alumno"));                
+                listaComentarios.add(comentario);
             }
 
         } catch (SQLException e) {
             System.err.println("Error al leer los comentarios: " + e.getMessage());
         }
+        
+        return listaComentarios;
+                
     }
     
     /**
@@ -76,27 +68,16 @@ public class ComentarioCRUD {
      * @throws SQLException si ocurre un error durante la ejecución de la
      * consulta SQL.
      */
-    public void modificarComentario() {
-        int id_comentario = leerIdComentario("ID del comentario a modificar: ");
-
-        String fechaIntroducida = leerEntrada("Fecha del comentario (dd/MM/yyyy): ", "\\d{2}/\\d{2}/\\d{4}",
-                "La fecha debe estar en formato dd/MM/yyyy.");
-        Date fecha = leerFecha(fechaIntroducida);
-
-        System.out.print("Detalle: ");
-        String detalle = sc.nextLine();
-
-        System.out.println("Empresas disponibles:");
-        leerEmpresa();
-        int id_empresa = leerIdEmpresa("ID de la empresa: ");
-
-        String updateQuery = "UPDATE comentario SET fecha = ?, detalle = ?, id_empresa = ? WHERE id_comentario = ?";
+    public static void modificarComentario(int id, Date fecha, String detalle, int id_tutorempresa, int id_alumno) {
+        
+        String updateQuery = "UPDATE comentario SET fecha = ?, detalle = ?, id_tutorempresa = ?, id_alumno = ? WHERE id = ?";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
 
             preparedStatement.setDate(1, fecha);
             preparedStatement.setString(2, detalle);
-            preparedStatement.setInt(3, id_empresa);
-            preparedStatement.setInt(4, id_comentario);
+            preparedStatement.setInt(3, id_tutorempresa);
+            preparedStatement.setInt(4, id_alumno);
+            preparedStatement.setInt(5, id);
 
             int filasAfectadas = preparedStatement.executeUpdate();
             System.out.println("Comentario actualizado. Filas afectadas: " + filasAfectadas);
@@ -117,12 +98,11 @@ public class ComentarioCRUD {
      * @throws SQLException Si ocurre un error al intentar eliminar el
      * comentario de la base de datos.
      */
-    public void borrarComentario() {
-        int id_comentario = leerIdComentario("ID del comentario a borrar: ");
-        String deleteQuery = "DELETE FROM comentario WHERE id_comentario = ?";
+    public static void borrarComentario(int id) {
+        String deleteQuery = "DELETE FROM comentario WHERE id = ?";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
 
-            preparedStatement.setInt(1, id_comentario);
+            preparedStatement.setInt(1, id);
             int filasAfectadas = preparedStatement.executeUpdate();
             System.out.println("Comentario eliminado. Filas afectadas: " + filasAfectadas);
 
@@ -144,6 +124,7 @@ public class ComentarioCRUD {
      * @return El ID del comentario ingresado por el usuario.
      */
     public int leerIdComentario(String mensaje) {
+        Scanner sc = new Scanner(System.in);
         while (true) {
             System.out.print(mensaje);
             String entrada = sc.nextLine();  // Leer como String para validar

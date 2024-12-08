@@ -1,11 +1,15 @@
 package aed.gestion_fct.model;
 
 import aed.gestion_fct.ConnectionPool;
+import aed.gestion_fct.data.Programa;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Scanner;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class ProgramaCRUD {
     
@@ -14,11 +18,8 @@ public class ProgramaCRUD {
      * ingresar el nombre del programa. Valida los datos antes de insertarlos en
      * la base de datos.
      */
-    public void crearPrograma() {
-        System.out.print("Nombre del programa: ");
-        String nombre = sc.nextLine();
-
-        String insertQuery = "INSERT INTO programa (nombre_programa) VALUES (?)";
+    public static void crearPrograma(String nombre) {
+        String insertQuery = "INSERT INTO programa (nombre) VALUES (?)";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
 
             preparedStatement.setString(1, nombre);
@@ -35,20 +36,23 @@ public class ProgramaCRUD {
      * Lee todos los registros de la tabla "programa". Muestra el ID y nombre de
      * cada programa en la base de datos.
      */
-    public void leerPrograma() {
+    public static ObservableList leerPrograma() {
         String query = "SELECT * FROM programa";
+        ObservableList<Programa> listaProgramas = FXCollections.observableArrayList();
 
         try (Connection connection = ConnectionPool.getConnection(); Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(query)) {
 
             while (resultSet.next()) {
-                System.out.println("ID Programa: " + resultSet.getInt("id_programa"));
-                System.out.println("Nombre: " + resultSet.getString("nombre_programa"));
-                System.out.println("-----------------------------------");
+                Programa programa = new Programa(resultSet.getInt("id"), resultSet.getString("nombre"));
+                
+                listaProgramas.add(programa);
             }
 
         } catch (SQLException e) {
             System.err.println("Error al leer los programas: " + e.getMessage());
         }
+        
+        return listaProgramas;
     }
     
     /**
@@ -58,17 +62,13 @@ public class ProgramaCRUD {
      * @throws SQLException si ocurre un error durante la ejecución de la
      * consulta SQL.
      */
-    public void modificarPrograma() {
-        int id_programa = leerIdPrograma("ID del programa a modificar: ");
-
-        System.out.print("Nombre del programa: ");
-        String nombre = sc.nextLine();
-
-        String updateQuery = "UPDATE programa SET nombre_programa = ? WHERE id_programa = ?";
+    public static void modificarPrograma(int id, String nombre) {
+        
+        String updateQuery = "UPDATE programa SET nombre = ? WHERE id = ?";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
 
             preparedStatement.setString(1, nombre);
-            preparedStatement.setInt(2, id_programa);
+            preparedStatement.setInt(2, id);
 
             int filasAfectadas = preparedStatement.executeUpdate();
             System.out.println("Programa actualizado. Filas afectadas: " + filasAfectadas);
@@ -89,12 +89,11 @@ public class ProgramaCRUD {
      * @throws SQLException Si ocurre un error al intentar eliminar el programa
      * de la base de datos.
      */
-    public void borrarPrograma() {
-        int id_programa = leerIdPrograma("ID del programa a borrar: ");
-        String deleteQuery = "DELETE FROM programa WHERE id_programa = ?";
+    public static void borrarPrograma(int id) {
+        String deleteQuery = "DELETE FROM programa WHERE id = ?";
         try (Connection connection = ConnectionPool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
 
-            preparedStatement.setInt(1, id_programa);
+            preparedStatement.setInt(1, id);
             int filasAfectadas = preparedStatement.executeUpdate();
             System.out.println("Programa eliminado. Filas afectadas: " + filasAfectadas);
 
@@ -116,6 +115,9 @@ public class ProgramaCRUD {
      * @return El ID del programa ingresado por el usuario.
      */
     public int leerIdPrograma(String mensaje) {
+        
+        Scanner sc = new Scanner(System.in);
+        
         while (true) {
             System.out.print(mensaje);
             String entrada = sc.nextLine();  // Leer como String para validar

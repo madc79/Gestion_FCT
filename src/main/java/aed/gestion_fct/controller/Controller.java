@@ -1,10 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package aed.gestion_fct.controller;
 
-import aed.gestion_fct.Alumno;
+import aed.gestion_fct.data.Alumno;
 import aed.gestion_fct.model.AlumnoCRUD;
 import java.awt.Button;
 import javafx.collections.ObservableList;
@@ -319,7 +315,7 @@ public class Controller {
     private void eliminarAlumno() {
         Alumno alumnoSeleccionado = AlumnoTableView.getSelectionModel().getSelectedItem();
         if (alumnoSeleccionado != null) {
-            int id = alumnoSeleccionado.getId();
+            int id = alumnoSeleccionado.getId().get();
             AlumnoCRUD.borrarAlumno(id);
             actualizarTabla();
         }
