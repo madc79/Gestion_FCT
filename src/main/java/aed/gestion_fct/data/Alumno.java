@@ -11,7 +11,6 @@ import javafx.beans.property.StringProperty;
  */
 public class Alumno {
 
-    private final IntegerProperty id;
     private final StringProperty nombre;
     private final StringProperty apellidos;
     private final StringProperty telefono;
@@ -23,10 +22,9 @@ public class Alumno {
     private final IntegerProperty empresa;
 
     // Constructor
-    public Alumno(int id, String nombre, String apellidos, String telefono,
+    public Alumno(String nombre, String apellidos, String telefono,
             String correo, int practica, int programa, int tutorDocente,
             int tutorEmpresa, int empresa) {
-        this.id = new SimpleIntegerProperty(id);
         this.nombre = new SimpleStringProperty(nombre);
         this.apellidos = new SimpleStringProperty(apellidos);
         this.telefono = new SimpleStringProperty(telefono);
@@ -39,10 +37,6 @@ public class Alumno {
     }
 
     // Getters 
-
-    public IntegerProperty getId() {
-        return id;
-    }
 
     public StringProperty getNombre() {
         return nombre;
