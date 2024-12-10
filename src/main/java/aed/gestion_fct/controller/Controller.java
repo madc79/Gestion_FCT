@@ -1,19 +1,15 @@
 package aed.gestion_fct.controller;
 
-import aed.gestion_fct.data.Alumno;
-import aed.gestion_fct.model.AlumnoCRUD;
+import aed.gestion_fct.data.*;
+import aed.gestion_fct.model.*;
 import java.awt.Button;
+import java.sql.Date;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
-
-/**
- *
- * @author danie
- */
 public class Controller {
     
     @FXML
@@ -74,22 +70,22 @@ public class Controller {
     private Button BuscarVisita;
 
     @FXML
-    private TableColumn ComentarioAlumno;
+    private TableColumn<Comentario, Integer> ComentarioAlumno;
 
     @FXML
-    private TableColumn ComentarioDetalle;
+    private TableColumn<Comentario, String> ComentarioDetalle;
 
     @FXML
-    private TableColumn ComentarioFecha;
+    private TableColumn<Comentario, Date> ComentarioFecha;
 
     @FXML
-    private TableColumn ComentarioIdComentario;
+    private TableColumn<Comentario, Integer> ComentarioIdComentario;
 
     @FXML
-    private TableView ComentarioTableView;
+    private TableView<Comentario> ComentarioTableView;
 
     @FXML
-    private TableColumn ComentarioTutorEmpresa;
+    private TableColumn<Comentario, Integer> ComentarioTutorEmpresa;
 
     @FXML
     private Button CrearAlumno;
@@ -140,25 +136,25 @@ public class Controller {
     private Button EliminarVisita;
 
     @FXML
-    private TableColumn EmpresaCorreo;
+    private TableColumn<Empresa, String> EmpresaCorreo;
 
     @FXML
-    private TableColumn EmpresaDireccion;
+    private TableColumn<Empresa, String> EmpresaDireccion;
 
     @FXML
-    private TableColumn EmpresaIdEmpresa;
+    private TableColumn<Empresa, Integer> EmpresaIdEmpresa;
 
     @FXML
-    private TableColumn EmpresaNombre;
+    private TableColumn<Empresa, String> EmpresaNombre;
 
     @FXML
-    private TableColumn EmpresaPlazas;
+    private TableColumn<Empresa, Integer> EmpresaPlazas;
 
     @FXML
-    private TableView EmpresaTableView;
+    private TableView<Empresa> EmpresaTableView;
 
     @FXML
-    private TableColumn EmpresaTelefono;
+    private TableColumn<Empresa, String> EmpresaTelefono;
 
     @FXML
     private Button ModificarAlumno;
@@ -185,88 +181,88 @@ public class Controller {
     private Button ModificarVisita;
 
     @FXML
-    private TableColumn PracticaAlumno;
+    private TableColumn<Practica, Integer> PracticaAlumno;
 
     @FXML
-    private TableColumn PracticaEstado;
+    private TableColumn<Practica, String> PracticaEstado;
 
     @FXML
-    private TableColumn PracticaFechaFin;
+    private TableColumn<Practica, Date> PracticaFechaFin;
 
     @FXML
-    private TableColumn PracticaFechaInicio;
+    private TableColumn<Practica, Date> PracticaFechaInicio;
 
     @FXML
-    private TableColumn PracticaIdPractica;
+    private TableColumn<Practica, Integer> PracticaIdPractica;
 
     @FXML
-    private TableView PracticaTableView;
+    private TableView<Practica> PracticaTableView;
 
     @FXML
-    private TableColumn ProgramaIdPrograma;
+    private TableColumn<Programa, Integer> ProgramaIdPrograma;
 
     @FXML
-    private TableColumn ProgramaNombre;
+    private TableColumn<Programa, String> ProgramaNombre;
 
     @FXML
-    private TableView ProgramaTableView;
+    private TableView<Programa> ProgramaTableView;
 
     @FXML
-    private TableColumn TutorDocenteApellidos;
+    private TableColumn<TutorDocente, String> TutorDocenteApellidos;
 
     @FXML
-    private TableColumn TutorDocenteCorreo;
+    private TableColumn<TutorDocente, String> TutorDocenteCorreo;
 
     @FXML
-    private TableColumn TutorDocenteIdTutorDocente;
+    private TableColumn<TutorDocente, Integer> TutorDocenteIdTutorDocente;
 
     @FXML
-    private TableColumn TutorDocenteNombre;
+    private TableColumn<TutorDocente, String> TutorDocenteNombre;
 
     @FXML
-    private TableView TutorDocenteTableView;
+    private TableView<TutorDocente> TutorDocenteTableView;
 
     @FXML
-    private TableColumn TutorDocenteTelefono;
+    private TableColumn<TutorDocente, String> TutorDocenteTelefono;
 
     @FXML
-    private TableColumn TutorEmpresaApellidos;
+    private TableColumn<TutorEmpresa, String> TutorEmpresaApellidos;
 
     @FXML
-    private TableColumn TutorEmpresaCorreo;
+    private TableColumn<TutorEmpresa, String> TutorEmpresaCorreo;
 
     @FXML
-    private TableColumn TutorEmpresaEmpresa;
+    private TableColumn<TutorEmpresa, Integer> TutorEmpresaEmpresa;
 
     @FXML
-    private TableColumn TutorEmpresaIdTutorEmpresa;
+    private TableColumn<TutorEmpresa, Integer> TutorEmpresaIdTutorEmpresa;
 
     @FXML
-    private TableColumn TutorEmpresaNombre;
+    private TableColumn<TutorEmpresa, String> TutorEmpresaNombre;
 
     @FXML
-    private TableView TutorEmpresaTableView;
+    private TableView<TutorEmpresa> TutorEmpresaTableView;
 
     @FXML
-    private TableColumn TutorEmpresaTelefono;
+    private TableColumn<TutorEmpresa, String> TutorEmpresaTelefono;
 
     @FXML
-    private TableColumn VisitaAsignacion;
+    private TableColumn<Visita, Integer> VisitaAsignacion; // Mal nombre, debería ser VisitTutorDocente
 
     @FXML
-    private TableColumn VisitaFecha;
+    private TableColumn<Visita, Date> VisitaFecha;
 
     @FXML
-    private TableColumn VisitaIdAlumno;
+    private TableColumn<Visita, Integer> VisitaIdAlumno;
 
     @FXML
-    private TableColumn VisitaIdVisita;
+    private TableColumn<Visita, Integer> VisitaIdVisita;
 
     @FXML
-    private TableColumn VisitaObservaciones;
+    private TableColumn<Visita, String> VisitaObservaciones;
 
     @FXML
-    private TableView VisitaTableView;
+    private TableView<Visita> VisitaTableView;
 
     @FXML
     private TabPane root;
@@ -290,13 +286,77 @@ public class Controller {
         AlumnoTableView.setItems(listaAlumnos);
         
         // Tabla practica
-
+        PracticaIdPractica.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
+        PracticaFechaInicio.setCellValueFactory(cellData -> cellData.getValue().getFecha_inicio());
+        PracticaFechaFin.setCellValueFactory(cellData -> cellData.getValue().getFecha_fin());
+        PracticaEstado.setCellValueFactory(cellData -> cellData.getValue().getEstado());
+        PracticaAlumno.setCellValueFactory(cellData -> cellData.getValue().getIdAlumno().asObject());
         
+        ObservableList<Practica> listaPracticas = PracticaCRUD.leerPractica();
+        PracticaTableView.setItems(listaPracticas);
         
+        // Tabla empresa
+        EmpresaIdEmpresa.setCellValueFactory(cellData -> cellData.getValue().getId_empresa().asObject());
+        EmpresaNombre.setCellValueFactory(cellData -> cellData.getValue().getNombre());
+        EmpresaCorreo.setCellValueFactory(cellData -> cellData.getValue().getCorreo());
+        EmpresaDireccion.setCellValueFactory(cellData -> cellData.getValue().getDireccion());
+        EmpresaTelefono.setCellValueFactory(cellData -> cellData.getValue().getTelefono());
+        EmpresaPlazas.setCellValueFactory(cellData -> cellData.getValue().getPlazas().asObject());
+        
+        ObservableList<Empresa> listaEmpresas = EmpresaCRUD.leerEmpresa();
+        EmpresaTableView.setItems(listaEmpresas);
+        
+        // Tabla tutordocente
+       TutorDocenteIdTutorDocente.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
+       TutorDocenteNombre.setCellValueFactory(cellData -> cellData.getValue().getNombre());
+       TutorDocenteApellidos.setCellValueFactory(cellData -> cellData.getValue().getApellidos());
+       TutorDocenteTelefono.setCellValueFactory(cellData -> cellData.getValue().getTelefono());
+       TutorDocenteCorreo.setCellValueFactory(cellData -> cellData.getValue().getCorreo());
+       
+       ObservableList<TutorDocente> listaTutoresDocentes = TutorDocenteCRUD.leerTutorDocente();
+       TutorDocenteTableView.setItems(listaTutoresDocentes);
+       
+       //Tabla tutorempresa
+       TutorEmpresaIdTutorEmpresa.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
+       TutorEmpresaNombre.setCellValueFactory(cellData -> cellData.getValue().getNombre());
+       TutorEmpresaApellidos.setCellValueFactory(cellData -> cellData.getValue().getApellidos());
+       TutorEmpresaTelefono.setCellValueFactory(cellData -> cellData.getValue().getTelefono());
+       TutorEmpresaCorreo.setCellValueFactory(cellData -> cellData.getValue().getCorreo());
+       TutorEmpresaEmpresa.setCellValueFactory(cellData -> cellData.getValue().getId_empresa().asObject());
+       
+       ObservableList<TutorEmpresa> listaTutoresEmpresa = TutorEmpresaCRUD.leerTutorEmpresa();
+       TutorEmpresaTableView.setItems(listaTutoresEmpresa);
+       
+       //Tabla programa
+       ProgramaIdPrograma.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
+       ProgramaNombre.setCellValueFactory(cellData -> cellData.getValue().getNombre());
+       
+       ObservableList<Programa> listaProgramas = ProgramaCRUD.leerPrograma();
+       ProgramaTableView.setItems(listaProgramas);
+       
+       //Tabla visita
+       VisitaIdVisita.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
+       VisitaFecha.setCellValueFactory(cellData -> cellData.getValue().getFecha());
+       VisitaObservaciones.setCellValueFactory(cellData -> cellData.getValue().getObservaciones());
+       VisitaAsignacion.setCellValueFactory(cellData -> cellData.getValue().getId_tutordocente().asObject());
+       VisitaIdAlumno.setCellValueFactory(cellData -> cellData.getValue().getId_alumno().asObject());
+       
+       ObservableList<Visita> listaVisitas = VisitaCRUD.leerVisita();
+       VisitaTableView.setItems(listaVisitas);
+       
+       //Tabla comentario
+       ComentarioIdComentario.setCellValueFactory(cellData -> cellData.getValue().getId().asObject());
+       ComentarioFecha.setCellValueFactory(cellData -> cellData.getValue().getFecha());
+       ComentarioDetalle.setCellValueFactory(cellData -> cellData.getValue().getDetalle());
+       ComentarioTutorEmpresa.setCellValueFactory(cellData -> cellData.getValue().getId_tutorempresa().asObject());
+       ComentarioAlumno.setCellValueFactory(cellData -> cellData.getValue().getId_alumno().asObject());
+       
+       ObservableList<Comentario> listaComentarios = ComentarioCRUD.leerComentario();
+       ComentarioTableView.setItems(listaComentarios);
     }
     
     @FXML
-    private void agregarAlumno() {
+    private void onCrearAlumno() {
         String nombre = AlumnoNombre.getText();
         String apellidos = AlumnoApellido.getText();
         String telefono = AlumnoTelefono.getText();
@@ -312,7 +372,7 @@ public class Controller {
     }
     
     @FXML
-    private void eliminarAlumno() {
+    private void onEliminarAlumno() {
         Alumno alumnoSeleccionado = AlumnoTableView.getSelectionModel().getSelectedItem();
         if (alumnoSeleccionado != null) {
             int id = alumnoSeleccionado.getId().get();
@@ -324,6 +384,11 @@ public class Controller {
     private void actualizarTabla() {
         ObservableList<Alumno> listaAlumnos = AlumnoCRUD.leerAlumno();
         AlumnoTableView.setItems(listaAlumnos);
+    }
+    
+    @FXML
+    private void agregarPractica() {
+        
     }
     
 }

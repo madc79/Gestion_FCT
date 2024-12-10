@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<TabPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<TabPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
   <tabs>
       <Tab text="Practicas">
          <content>
@@ -30,10 +30,10 @@
                <bottom>
                   <HBox alignment="CENTER" prefHeight="54.0" prefWidth="600.0" spacing="15.0" BorderPane.alignment="CENTER">
                      <children>
-                        <Button fx:id="CrearPractica" mnemonicParsing="false" text="Crear nuevo" />
-                        <Button fx:id="ModificarPractica" mnemonicParsing="false" text="Modificar" />
-                        <Button fx:id="EliminarPractica" mnemonicParsing="false" text="Eliminar" />
-                        <Button fx:id="BuscarPractica" mnemonicParsing="false" text="Buscar" />
+                        <Button fx:id="CrearPractica" mnemonicParsing="false" onAction="#onCrearPractica" text="Crear nuevo" />
+                        <Button fx:id="ModificarPractica" mnemonicParsing="false" onAction="#onModificarPractica" text="Modificar" />
+                        <Button fx:id="EliminarPractica" mnemonicParsing="false" onAction="#onEliminarPractica" text="Eliminar" />
+                        <Button fx:id="BuscarPractica" mnemonicParsing="false" onAction="#onBuscarPractica" text="Buscar" />
                      </children>
                   </HBox>
                </bottom>
@@ -65,10 +65,10 @@
                <bottom>
                   <HBox alignment="CENTER" prefHeight="54.0" prefWidth="600.0" spacing="15.0" BorderPane.alignment="CENTER">
                      <children>
-                        <Button fx:id="CrearAlumno" mnemonicParsing="false" text="Crear nuevo" />
-                        <Button fx:id="ModificarAlumno" mnemonicParsing="false" text="Modificar" />
-                        <Button fx:id="EliminarAlumno" mnemonicParsing="false" text="Eliminar" />
-                        <Button fx:id="BuscarAlumno" mnemonicParsing="false" text="Buscar" />
+                        <Button fx:id="CrearAlumno" mnemonicParsing="false" onAction="#onCrearAlumno" text="Crear nuevo" />
+                        <Button fx:id="ModificarAlumno" mnemonicParsing="false" onAction="#onModificarAlumno" text="Modificar" />
+                        <Button fx:id="EliminarAlumno" mnemonicParsing="false" onAction="#onEliminarAlumno" text="Eliminar" />
+                        <Button fx:id="BuscarAlumno" mnemonicParsing="false" onAction="#onBuscarAlumno" text="Buscar" />
                      </children>
                   </HBox>
                </bottom>
@@ -80,10 +80,10 @@
                <bottom>
                   <HBox alignment="CENTER" prefHeight="54.0" prefWidth="600.0" spacing="15.0">
                      <children>
-                        <Button fx:id="CrearVisita" mnemonicParsing="false" text="Crear nuevo" />
-                        <Button fx:id="ModificarVisita" mnemonicParsing="false" text="Modificar" />
-                        <Button fx:id="EliminarVisita" mnemonicParsing="false" text="Eliminar" />
-                        <Button fx:id="BuscarVisita" mnemonicParsing="false" text="Buscar" />
+                        <Button fx:id="CrearVisita" mnemonicParsing="false" onAction="#onCrearVisita" text="Crear nuevo" />
+                        <Button fx:id="ModificarVisita" mnemonicParsing="false" onAction="#onModificarVisita" text="Modificar" />
+                        <Button fx:id="EliminarVisita" mnemonicParsing="false" onAction="#onEliminarVisita" text="Eliminar" />
+                        <Button fx:id="BuscarVisita" mnemonicParsing="false" onAction="#onBuscarVisita" text="Buscar" />
                      </children>
                   </HBox>
                </bottom>
@@ -109,10 +109,10 @@
                <bottom>
                   <HBox alignment="CENTER" prefHeight="54.0" prefWidth="600.0" spacing="15.0" BorderPane.alignment="CENTER">
                      <children>
-                        <Button fx:id="CrearEmpresa" mnemonicParsing="false" text="Crear nuevo" />
-                        <Button fx:id="ModificarEmpresa" mnemonicParsing="false" text="Modificar" />
-                        <Button fx:id="EliminarEmpresa" mnemonicParsing="false" text="Eliminar" />
-                        <Button fx:id="BuscarEmpresa" mnemonicParsing="false" text="Buscar" />
+                        <Button fx:id="CrearEmpresa" mnemonicParsing="false" onAction="#onCrearEmpresa" text="Crear nuevo" />
+                        <Button fx:id="ModificarEmpresa" mnemonicParsing="false" onAction="#onModificarEmpresa" text="Modificar" />
+                        <Button fx:id="EliminarEmpresa" mnemonicParsing="false" onAction="#onEliminarEmpresa" text="Eliminar" />
+                        <Button fx:id="BuscarEmpresa" mnemonicParsing="false" onAction="#onBuscarEmpresa" text="Buscar" />
                      </children></HBox>
                </bottom>
                <center>
@@ -139,10 +139,10 @@
                <bottom>
                   <HBox alignment="CENTER" prefHeight="54.0" prefWidth="600.0" spacing="15.0" BorderPane.alignment="CENTER">
                      <children>
-                        <Button fx:id="CrearTutorEmpresa" mnemonicParsing="false" text="Crear nuevo" />
-                        <Button fx:id="ModificarTutorEmpresa" mnemonicParsing="false" text="Modificar" />
-                        <Button fx:id="EliminarTutorEmpresa" mnemonicParsing="false" text="Eliminar" />
-                        <Button fx:id="BuscarTutorEmpresa" mnemonicParsing="false" text="Buscar" />
+                        <Button fx:id="CrearTutorEmpresa" mnemonicParsing="false" onAction="#onCrearTutorEmpresa" text="Crear nuevo" />
+                        <Button fx:id="ModificarTutorEmpresa" mnemonicParsing="false" onAction="#onModificarTutorEmpresa" text="Modificar" />
+                        <Button fx:id="EliminarTutorEmpresa" mnemonicParsing="false" onAction="#onEliminarTutorEmpresa" text="Eliminar" />
+                        <Button fx:id="BuscarTutorEmpresa" mnemonicParsing="false" onAction="#onBuscarTutorEmpresa" text="Buscar" />
                      </children></HBox>
                </bottom>
                <center>
@@ -169,10 +169,10 @@
                <bottom>
                   <HBox alignment="CENTER" prefHeight="54.0" prefWidth="600.0" spacing="15.0" BorderPane.alignment="CENTER">
                      <children>
-                        <Button fx:id="CrearTutorDocente" mnemonicParsing="false" text="Crear nuevo" />
-                        <Button fx:id="ModificarTutorDocente" mnemonicParsing="false" text="Modificar" />
-                        <Button fx:id="EliminarTutorDocente" mnemonicParsing="false" text="Eliminar" />
-                        <Button fx:id="BuscarTutorDocente" mnemonicParsing="false" text="Buscar" />
+                        <Button fx:id="CrearTutorDocente" mnemonicParsing="false" onAction="#onCrearTutorDocente" text="Crear nuevo" />
+                        <Button fx:id="ModificarTutorDocente" mnemonicParsing="false" onAction="#onModificarTutorDocente" text="Modificar" />
+                        <Button fx:id="EliminarTutorDocente" mnemonicParsing="false" onAction="#onEliminarTutorDocente" text="Eliminar" />
+                        <Button fx:id="BuscarTutorDocente" mnemonicParsing="false" onAction="#onBuscarTutorDocente" text="Buscar" />
                      </children></HBox>
                </bottom>
                <center>
@@ -198,10 +198,10 @@
                <bottom>
                   <HBox alignment="CENTER" prefHeight="54.0" prefWidth="600.0" spacing="15.0" BorderPane.alignment="CENTER">
                      <children>
-                        <Button fx:id="CrearComentario" mnemonicParsing="false" text="Crear nuevo" />
-                        <Button fx:id="ModificarComentario" mnemonicParsing="false" text="Modificar" />
-                        <Button fx:id="EliminarComentario" mnemonicParsing="false" text="Eliminar" />
-                        <Button fx:id="BuscarComentario" mnemonicParsing="false" text="Buscar" />
+                        <Button fx:id="CrearComentario" mnemonicParsing="false" onAction="#onCrearComentario" text="Crear nuevo" />
+                        <Button fx:id="ModificarComentario" mnemonicParsing="false" onAction="#onModificarComentario" text="Modificar" />
+                        <Button fx:id="EliminarComentario" mnemonicParsing="false" onAction="#onEliminarComentario" text="Eliminar" />
+                        <Button fx:id="BuscarComentario" mnemonicParsing="false" onAction="#onBuscarComentario" text="Buscar" />
                      </children></HBox>
                </bottom>
                <center>
@@ -238,10 +238,10 @@
                <bottom>
                   <HBox alignment="CENTER" prefHeight="54.0" prefWidth="600.0" spacing="15.0" BorderPane.alignment="CENTER">
                      <children>
-                        <Button fx:id="CrearPrograma" mnemonicParsing="false" text="Crear nuevo" />
-                        <Button fx:id="ModificarPrograma" mnemonicParsing="false" text="Modificar" />
-                        <Button fx:id="EliminarPrograma" mnemonicParsing="false" text="Eliminar" />
-                        <Button fx:id="BuscarPrograma" mnemonicParsing="false" text="Buscar" />
+                        <Button fx:id="CrearPrograma" mnemonicParsing="false" onAction="#onCrearPrograma" text="Crear nuevo" />
+                        <Button fx:id="ModificarPrograma" mnemonicParsing="false" onAction="#onModificarPrograma" text="Modificar" />
+                        <Button fx:id="EliminarPrograma" mnemonicParsing="false" onAction="#onEliminarPrograma" text="Eliminar" />
+                        <Button fx:id="BuscarPrograma" mnemonicParsing="false" onAction="#onBuscarPrograma" text="Buscar" />
                      </children>
                   </HBox>
                </bottom>
